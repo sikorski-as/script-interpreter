@@ -6,23 +6,23 @@ set(CMAKE_CXX_STANDARD 17)
 add_executable(tkom_interpreter
         main.cpp
 
-        Source.cpp Source.h
-        StringSource.cpp StringSource.h
+        modules/Source.cpp modules/Source.h
+        modules/StringSource.cpp modules/StringSource.h
 
-        Lexer.cpp Lexer.h
-        Token.cpp Token.h
+        modules/Lexer.cpp modules/Lexer.h
+        structures/Token.cpp structures/Token.h
 
-        ast/ASTNode.h
-        ast/Program.h
+        structures/ast/ASTNode.h
+        structures/ast/Program.h
 
-        ast/FunctionDefinition.h
-        ast/Statement.h
-        ast/BlockStatement.h
-        ast/IfStatement.h
-        ast/Assignable.h
-        ast/WhileStatement.h
-        ast/ReturnStatement.h
-        ast/VariableDeclaration.h
-        ast/VariableDefinition.h
-        ast/VariableAssignment.h ast/Expression.h ast/Literal.h ast/Variable.h ast/FunctionCall.h ast/MethodCall.h)
+        structures/ast/FunctionDefinition.h
+        structures/ast/Statement.h
+        structures/ast/BlockStatement.h
+        structures/ast/IfStatement.h
+        structures/ast/Assignable.h
+        structures/ast/WhileStatement.h
+        structures/ast/ReturnStatement.h
+        structures/ast/VariableDeclaration.h
+        structures/ast/VariableDefinition.h
+        structures/ast/VariableAssignment.h structures/ast/Expression.h structures/ast/Literal.h structures/ast/Variable.h structures/ast/FunctionCall.h structures/ast/MethodCall.h)
 

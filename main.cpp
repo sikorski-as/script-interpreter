@@ -5,13 +5,13 @@
 #include <vector>
 #include <memory>
 
-#include "StringSource.h"
-#include "Lexer.h"
-#include "ast/ASTNode.h"
-#include "ast/Program.h"
-#include "ast/ReturnStatement.h"
-#include "ast/FunctionCall.h"
-#include "ast/Literal.h"
+#include "modules/StringSource.h"
+#include "modules/Lexer.h"
+#include "structures/ast/ASTNode.h"
+#include "structures/ast/Program.h"
+#include "structures/ast/ReturnStatement.h"
+#include "structures/ast/FunctionCall.h"
+#include "structures/ast/Literal.h"
 
 using std::string;
 using std::vector;

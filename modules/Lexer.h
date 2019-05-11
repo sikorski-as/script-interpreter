@@ -1,6 +1,6 @@
 #pragma once
 #include "Source.h"
-#include "Token.h"
+#include "../structures/Token.h"
 #include <string>
 #include <map>
 
