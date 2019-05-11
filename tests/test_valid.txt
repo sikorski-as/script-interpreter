@@ -1,0 +1,28 @@
+int x = 1.52137;
+float f = 1997;
+void foo()
+{
+	x = x + -1;
+	string str = "hello, there!";
+}
+
+float num = (1 + 2) / 3 * 4;
+
+string s1 = "hello, ";
+string s2 = "there!"; # komentarz 1
+string s3 = s1 ~ s2;
+
+algorithm al_01 = "#";
+network net;
+
+if(x==0){
+	x < 1;
+	x <= 2;
+	x > 3;
+	x >= 4;
+	x != 5;
+	al_01.fun();
+}
+(12)(1.2)
+0.1 # komentarz 2
+# komentarz 3
