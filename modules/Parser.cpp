@@ -176,7 +176,7 @@ FunctionDefinition::ptr Parser::parseFunctionDefinition() {
 
         if(!type.empty() && !name.empty()){
             functionDefinition->arguments.push_back(std::make_pair(type, name));
-            log({"Parsed argument's prototype: " + type + " " + name});
+            //log({"Parsed argument's prototype: " + type + " " + name});
         }
     }
     consumeToken();
@@ -391,7 +391,7 @@ FunctionCall::ArgumentsList Parser::parseCallArguments() {
 }
 
 void Parser::debug(std::string msg) {
-    std::cout << msg << std::endl;
+    // std::cout << msg << std::endl;
 }
 
 

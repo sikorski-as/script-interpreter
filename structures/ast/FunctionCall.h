@@ -25,6 +25,15 @@ public:
         return Type::function_call;
     }
 
+    std::string representation() const override {
+        return "Function call of " + functionName;
+    };
+
+    ChildrenList getChildren() override {
+        auto children = ChildrenList(arguments.begin(), arguments.end());
+        return children;
+    }
+
     std::string functionName;
     std::vector<Assignable::ptr> arguments;
 };

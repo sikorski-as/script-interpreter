@@ -25,6 +25,15 @@ public:
         statements.push_back(statement);
     }
 
+    std::string representation() const override {
+        return "Program";
+    };
+
+    ChildrenList getChildren() override {
+        auto children = ChildrenList(functionDefinitions.begin(), functionDefinitions.end());
+        return children;
+    }
+
 	std::vector<FunctionDefinition::ptr> functionDefinitions;
 	std::vector<Statement::ptr> statements;
 };

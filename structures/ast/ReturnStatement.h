@@ -17,6 +17,14 @@ public:
     }
 
     Assignable::ptr returnedValue;
+
+    std::string representation() const override {
+        return "Return statement";
+    };
+
+    ChildrenList getChildren() override {
+        return ChildrenList({returnedValue});
+    }
 };
 
 

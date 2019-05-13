@@ -22,17 +22,18 @@ public:
 
     }
 
-//    FunctionDefinition(std::string returnedTypeName,
-//                       std::string functionName,
-//                       std::initializer_list<std::pair<std::string, std::string>> arguments = {},
-//                       BlockStatement::ptr body = nullptr)
-//            : returnTypeName(returnedTypeName), functionName(functionName), arguments(arguments),  body(body)
-//    {
-//
-//    }
-
     Type getType() const override {
         return Type::function_definition;
+    }
+
+    std::string representation() const override {
+        return "Definition of function "
+        + returnTypeName + " " + functionName + "([" + std::to_string(arguments.size()) + "])";
+    };
+
+    ChildrenList getChildren() override {
+        auto children = ChildrenList({body});
+        return children;
     }
 
     std::string returnTypeName;

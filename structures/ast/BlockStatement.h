@@ -17,6 +17,15 @@ public:
     }
 
     std::vector<Statement::ptr> statements;
+
+    std::string representation() const override {
+        return "Block statement";
+    };
+
+    ChildrenList getChildren() override {
+        auto children = ChildrenList(statements.begin(), statements.end());
+        return children;
+    }
 };
 
 

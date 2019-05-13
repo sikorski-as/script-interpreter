@@ -18,6 +18,10 @@ public:
         return Type::method_call;
     }
 
+    std::string representation() const override {
+        return "Method call of " + objectName + "." + functionName;
+    };
+
     std::string objectName;
 };
 

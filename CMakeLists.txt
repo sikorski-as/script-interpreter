@@ -28,5 +28,5 @@ add_executable(tkom_interpreter
         structures/ast/Literal.h
         structures/ast/Variable.h
         structures/ast/FunctionCall.h
-        structures/ast/MethodCall.h structures/ast/AST.h)
+        structures/ast/MethodCall.h structures/ast/AST.h structures/ast/ASTNodePrinter.h)
 

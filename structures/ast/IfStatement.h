@@ -17,6 +17,15 @@ public:
         return Type::if_statement;
     }
 
+    std::string representation() const override {
+        return "If statement";
+    };
+
+    ChildrenList getChildren() override {
+        auto children = ChildrenList({condition, trueBlock, falseBlock});
+        return children;
+    }
+
     Assignable::ptr condition;
     BlockStatement::ptr trueBlock;
     BlockStatement::ptr falseBlock;

@@ -19,6 +19,15 @@ public:
 
     Assignable::ptr condition;
     BlockStatement::ptr body;
+
+
+    std::string representation() const override {
+        return "While statement";
+    };
+
+    ChildrenList getChildren() override {
+        return ChildrenList({condition, body});
+    }
 };
 
 

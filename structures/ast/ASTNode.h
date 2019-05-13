@@ -1,9 +1,14 @@
 #pragma once
+
 #include <memory>
+#include <vector>
+
 class ASTNode
 {
 public:
 	typedef std::shared_ptr<ASTNode> ptr;
+	typedef std::vector<std::shared_ptr<ASTNode>> ChildrenList;
+
 	enum class Type {
 		program,
 		
@@ -30,6 +35,8 @@ public:
 	ASTNode() = default;
 	virtual ~ASTNode() = default;
 
+	virtual std::string representation() const { return "ASTNode"; };
+	virtual ChildrenList getChildren(){ return ChildrenList(); }
 	virtual Type getType() const = 0;
 };
 

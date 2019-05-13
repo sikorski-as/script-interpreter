@@ -18,6 +18,10 @@ public:
         return Type::variable;
     }
 
+    std::string representation() const override {
+        return "Variable " + name;
+    };
+
     std::string name;
 };
 

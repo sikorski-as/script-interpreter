@@ -16,6 +16,10 @@ public:
         return Type::var_declaration;
     }
 
+    std::string representation() const override {
+        return "Variable " + name + " declaration of type " + typeName;
+    };
+
     std::string name;
     std::string typeName;
 };

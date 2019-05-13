@@ -17,6 +17,15 @@ public:
         return Type::var_definition;
     }
 
+    std::string representation() const override {
+        return "Variable " + name + " definition of type " + typeName;
+    };
+
+    ChildrenList getChildren() override {
+        auto children = ChildrenList({value});
+        return children;
+    }
+
     std::string name;
     std::string typeName;
     Assignable::ptr value;

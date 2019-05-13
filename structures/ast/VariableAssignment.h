@@ -18,6 +18,15 @@ public:
         return Type::var_assignment;
     }
 
+    std::string representation() const override {
+        return "Variable " + name + " assignment";
+    };
+
+    ChildrenList getChildren() override {
+        auto children = ChildrenList({value});
+        return children;
+    }
+
     std::string name;
     Assignable::ptr value;
 };

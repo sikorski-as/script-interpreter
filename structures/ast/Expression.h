@@ -34,9 +34,17 @@ public:
         operands.push_back(operand);
     }
 
+    std::string representation() const override {
+        return "Expression (number of operators: " + std::to_string(operators.size()) + ")";
+    };
+
+    ChildrenList getChildren() override {
+        auto children = ChildrenList(operands.begin(), operands.end());
+        return children;
+    }
+
     std::vector<Token::Type> operators;
     std::vector<Assignable::ptr> operands;
-
 };
 
 
