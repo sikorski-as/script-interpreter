@@ -32,8 +32,13 @@ int main(int argc, const char* argv[])
 	//StringSource source(fileToString("tests/test_unexpected_eof_float.txt"));
 	//StringSource source(fileToString("tests/test_unexpected_eof_string.txt"));
 	//StringSource source(fileToString("tests/test_expected_digit_float.txt"));
-	//StringSource source("int main(){\n\treturn 0;\n}");
-	StringSource source("void foo(int x, float f){return (0+1) * 3;}int main(int argc){}int boo(){}");
+	StringSource source("int main(){"
+                     "if(foo.boo((1.0+5+3), true))"
+                     "{"
+                     ""
+                     "}"
+                     "}");
+	//StringSource source("void foo(int x, float f){if(true){} return (0+1) * 3;}int main(int argc){}int boo(){}");
 	Lexer lexer(source);
 	Parser parser(lexer);
 
@@ -65,9 +70,6 @@ int main(int argc, const char* argv[])
 
         if(parser.success()){
             std::cout << "Parser successfully parsed program" << std::endl;
-            std::cout << "Number of variable definitions/declarations: " << program->statements.size() << std::endl;
-            std::cout << "Number of function definitions: " << program->functionDefinitions.size() << std::endl;
-
             printASTNode(program);
         }
         else{

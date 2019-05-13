@@ -74,6 +74,7 @@ void Parser::log(Parser::LogEntry entry) {
 void Parser::error(Parser::LogEntry entry) {
     log(entry);
     successAchieved = false;
+    std::cout << '\t' << entry.text << std::endl;
 }
 
 void Parser::errorWithTokenInfo(std::string message){
@@ -206,16 +207,45 @@ BlockStatement::ptr Parser::parseBlockStatement() {
 
 Statement::ptr Parser::parseStatement() {
     debug("Parsing statement");
-    Statement::ptr statement = nullptr;
 
     if(accept(Token::Type::identifier)){
-
+        std::cout << "todo: identifier"; while(1);
     }
     else if(accept(Token::Type::keyword_while)){
+        consumeToken(); // consume while
 
+        acceptOrErrorWithTokenInfo(Token::Type::paren_left, "Expected a left parenthesis while parsing a while statement");
+        consumeToken(); // consume (
+
+        auto condition = parseAssignable();
+
+        acceptOrErrorWithTokenInfo(Token::Type::paren_right, "Expected a right parenthesis while parsing a while statement");
+        consumeToken(); // consume )
+
+        auto body = parseBlockStatement();
+
+        return std::make_shared<WhileStatement>(condition, body);
     }
     else if(accept(Token::Type::keyword_if)){
+        consumeToken(); // consume if
 
+        acceptOrErrorWithTokenInfo(Token::Type::paren_left, "Expected a left parenthesis");
+        consumeToken(); // consume (
+
+        auto condition = parseAssignable();
+
+        acceptOrErrorWithTokenInfo(Token::Type::paren_right, "Expected a right parenthesis");
+        consumeToken(); // consume )
+
+        BlockStatement::ptr trueBlock = parseBlockStatement();
+        BlockStatement::ptr falseBlock = nullptr;
+
+        if(accept(Token::Type::keyword_else)){
+            consumeToken(); // consume else
+            falseBlock = parseBlockStatement();
+        }
+
+        return std::make_shared<IfStatement>(condition, trueBlock, falseBlock);
     }
     else if(accept(Token::Type::keyword_return)){
         consumeToken(); // consume return
@@ -232,11 +262,7 @@ Statement::ptr Parser::parseStatement() {
         return std::make_shared<ReturnStatement>(returnedValue);
     }
 
-    //consumeToken();
-    // todo!!!
-    //std::cout << "todo: parseStatement"; while(true);
-
-    return statement;
+    return nullptr;
 }
 
 Assignable::ptr Parser::buildBinaryExpression(Assignable::ptr left, Token::Type oper, Assignable::ptr right) {
@@ -270,6 +296,7 @@ Assignable::ptr Parser::parseAssignable() {
 
         return buildBinaryExpression(simpleExpression, relationalOperator, secondSimpleExpression);
     }
+
     return simpleExpression;
 }
 
@@ -311,12 +338,36 @@ Assignable::ptr Parser::parseAndExpression() {
         auto expression = parseAndExpression();
         return buildUnaryExpression(Token::Type::operator_not, expression);
     }
+    else if(accept(Token::Type::operator_minus)){
+        consumeToken();
+        if(accept({Token::Type::const_int,
+                   Token::Type::const_float})){
+
+            auto number = std::make_shared<Literal>(getAndConsumeToken());
+            auto value = number->data.value;
+
+            if(std::holds_alternative<int>(value)){
+                number->data.value = -std::get<int>(value);
+            }
+            else if(std::holds_alternative<float>(value)){
+                number->data.value = -std::get<float>(value);
+            }
+
+            return number;
+        }
+        else{
+            auto expression = parseAndExpression();
+            return buildUnaryExpression(Token::Type::operator_minus, expression);
+        }
+    }
     else if(accept({Token::Type::const_int,
                     Token::Type::const_float,
                     Token::Type::const_string,
                     Token::Type::keyword_true,
                     Token::Type::keyword_false})){
-        return std::make_shared<Literal>(getAndConsumeToken());
+
+        auto literal = std::make_shared<Literal>(getAndConsumeToken());
+        return literal;
     }
     else if(accept(Token::Type::paren_left)){
         consumeToken();
@@ -329,7 +380,7 @@ Assignable::ptr Parser::parseAndExpression() {
         return expression;
     }
     else if(accept(Token::Type::identifier)){
-        return parseIdentifierFunctionCallOrMethodCall();
+        return parseIdentifierPrefixForAssignable();
     }
 
     errorWithTokenInfo("Unexpected token " + getToken().representation);
@@ -338,13 +389,15 @@ Assignable::ptr Parser::parseAndExpression() {
     return nullptr;
 }
 
-Assignable::ptr Parser::parseIdentifierFunctionCallOrMethodCall() {
+Assignable::ptr Parser::parseIdentifierPrefixForAssignable() {
     debug("Parsing identifier, function call or method call");
     std::string name = std::get<std::string>(getAndConsumeToken().value);
 
     if(accept(Token::Type::operator_dot)){
         consumeToken();
         std::string methodName = getIdentifierNameOrErrorWithTokenInfo("Expected and identifier with method name");
+        consumeToken(); // todo - czy tu powinien być brany następny token?
+
         auto argumentsList = parseCallArguments();
         auto methodCall = std::make_shared<MethodCall>(name, methodName);
 
@@ -361,8 +414,7 @@ Assignable::ptr Parser::parseIdentifierFunctionCallOrMethodCall() {
         return functionCall;
     }
 
-    errorWithTokenInfo("Expected operator dot or list of function call arguments");
-    return nullptr;
+    return std::make_shared<Variable>(name);
 }
 
 FunctionCall::ArgumentsList Parser::parseCallArguments() {
@@ -375,8 +427,15 @@ FunctionCall::ArgumentsList Parser::parseCallArguments() {
     while(!accept({Token::Type::paren_right})){
         std::string type, name;
 
-        if(atLeastOne && accept(Token::Type::operator_comma)) // todo: a co jeśli nie było argumentu?
-            consumeToken();
+        if(accept(Token::Type::operator_comma)){
+            if(atLeastOne){
+                consumeToken();
+            }
+            else{
+                errorWithTokenInfo("Unexpected operator ,");
+                consumeToken();
+            }
+        }
 
         auto argument = parseAssignable();
         argumentsList.push_back(argument);
@@ -391,8 +450,6 @@ FunctionCall::ArgumentsList Parser::parseCallArguments() {
 }
 
 void Parser::debug(std::string msg) {
-    // std::cout << msg << std::endl;
+    std::cout << msg << "/" << getToken().representation << std::endl;
 }
-
-
 

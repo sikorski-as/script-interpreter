@@ -7,7 +7,7 @@
 void printASTNode(ASTNode::ptr node, int level = 0){
     if(node != nullptr){
         for(int i = 0; i < level; i++){
-            std::cout << '\t';
+            std::cout << "   ";
         }
         std::cout << node->representation() << std::endl;
         for(auto& child: node->getChildren()){

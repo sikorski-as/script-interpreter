@@ -19,7 +19,7 @@ public:
     std::vector<Statement::ptr> statements;
 
     std::string representation() const override {
-        return "Block statement";
+        return "Block statement (" + std::to_string(statements.size()) + " statements)";
     };
 
     ChildrenList getChildren() override {

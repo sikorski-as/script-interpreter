@@ -26,7 +26,7 @@ public:
     }
 
     std::string representation() const override {
-        return "Program";
+        return "Program (" + std::to_string(functionDefinitions.size()) + " function definitions)";
     };
 
     ChildrenList getChildren() override {

@@ -70,7 +70,7 @@ private:
     Assignable::ptr parseSimpleExpression();
     Assignable::ptr parseOrExpression();
     Assignable::ptr parseAndExpression();
-    Assignable::ptr parseIdentifierFunctionCallOrMethodCall();
+    Assignable::ptr parseIdentifierPrefixForAssignable();
 
     FunctionCall::ArgumentsList parseCallArguments();
 
