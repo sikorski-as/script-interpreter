@@ -93,7 +93,7 @@ Token Lexer::findNumber()
 				f = static_cast<float>(i);
 				nextSymbolSafe();
 				if (source.eof())
-					throw Lexer::UnexpectedEndOfFile("Unexpected end of file when parsing a number");
+					throw Lexer::UnexpectedEndOfFile("Unexpected end of file when parsing a number" + getSourcePointer());
 				else if(!isdigit(symbol))
 					throw Lexer::UnexpectedSymbol("Expected a digit after .");
 			}
@@ -233,118 +233,139 @@ Token Lexer::checkIfGreaterOrGreaterEqual()
 	return t;
 }
 
+Token Lexer::buildToken() {
+    skipWhitespace();
+    skipComment();
+
+    if (!source.eof()) {
+        if (isalpha(symbol))
+            return findKeywordOrIdentifier(); // done
+        else if (isdigit(symbol)) {
+            return findNumber(); // todo
+        }
+
+        Token t(Token::Type::unknown, "unkown token");
+        t.column = source.getColumnNumber();
+        t.line = source.getLineNumber();
+
+        switch (symbol) {
+            case '"':
+                return findStringConstant(); // done
+            case '=':
+                return checkIfAssignmentOrEqual(); // done
+            case '!':
+                return checkIfNotOrNotEqual(); // done
+            case '<':
+                return checkIfLessOrLessEqual(); // done
+            case '>':
+                return checkIfGreaterOrGreaterEqual(); // done
+            case '-':
+                nextSymbolSafe();
+                t.type = Token::Type::operator_minus;
+                t.representation = "operator -";
+                return t;
+            case '{':
+                nextSymbolSafe();
+                t.type = Token::Type::bracket_left;
+                t.representation = "token {";
+                return t;
+            case '}':
+                nextSymbolSafe();
+                t.type = Token::Type::bracket_right;
+                t.representation = "token }";
+                return t;
+            case '(':
+                nextSymbolSafe();
+                t.type = Token::Type::paren_left;
+                t.representation = "token (";
+                return t;
+            case ')':
+                nextSymbolSafe();
+                t.type = Token::Type::paren_right;
+                t.representation = "token )";
+                return t;
+            case '.':
+                nextSymbolSafe();
+                t.type = Token::Type::operator_dot;
+                t.representation = "operator .";
+                return t;
+            case ',':
+                nextSymbolSafe();
+                t.type = Token::Type::operator_comma;
+                t.representation = "operator ,";
+                return t;
+            case ';':
+                nextSymbolSafe();
+                t.type = Token::Type::operator_semicolon;
+                t.representation = "token ;";
+                return t;
+            case '+':
+                nextSymbolSafe();
+                t.type = Token::Type::operator_plus;
+                t.representation = "operator +";
+                return t;
+            case '*':
+                nextSymbolSafe();
+                t.type = Token::Type::operator_multiply;
+                t.representation = "operator *";
+                return t;
+            case '/':
+                nextSymbolSafe();
+                t.type = Token::Type::operator_divide;
+                t.representation = "operator /";
+                return t;
+            case '~':
+                nextSymbolSafe();
+                t.type = Token::Type::operator_concat;
+                t.representation = "operator ~";
+                return t;
+            case '&':
+                nextSymbolSafe();
+                t.type = Token::Type::operator_and;
+                t.representation = "operator &";
+                return t;
+            case '|':
+                nextSymbolSafe();
+                t.type = Token::Type::operator_or;
+                t.representation = "operator |";
+                return t;
+        }
+        //std::cout << "???: " << symbol << std::endl;
+        nextSymbolSafe();
+        return t;
+    }
+    else {
+        Token t(Token::Type::eof, "token eof");
+        t.column = source.getColumnNumber();
+        t.line = source.getLineNumber();
+        return t;
+    }
+}
+
+//
+// public
+//
+
 Lexer::Lexer(Source& source)
-	:source(source), symbol(' ')
+	:source(source), symbol(' '), hasBufferedToken(false)
 {
 	
 }
 
 Token Lexer::getToken()
 {
-	skipWhitespace();
-	skipComment();
+    if(!hasBufferedToken){
+        hasBufferedToken = true;
+        bufferedToken = buildToken();
+    }
 
-	if (!source.eof()) {
-		if (isalpha(symbol))
-			return findKeywordOrIdentifier(); // done
-		else if (isdigit(symbol)) {
-			return findNumber(); // todo
-		}
+    return bufferedToken;
+}
 
-		Token t(Token::Type::unknown, "unkown token");
-		t.column = source.getColumnNumber();
-		t.line = source.getLineNumber();
+void Lexer::consumeToken() {
+    bufferedToken = buildToken();
+}
 
-		switch (symbol) {
-		case '"':
-			return findStringConstant(); // done
-		case '=':
-			return checkIfAssignmentOrEqual(); // done
-		case '!':
-			return checkIfNotOrNotEqual(); // done
-		case '<':
-			return checkIfLessOrLessEqual(); // done
-		case '>':
-			return checkIfGreaterOrGreaterEqual(); // done
-		case '-':
-			nextSymbolSafe();
-			t.type = Token::Type::operator_minus;
-			t.representation = "operator -";
-			return t;
-		case '{':
-			nextSymbolSafe();
-			t.type = Token::Type::bracket_left;
-			t.representation = "token {";
-			return t;
-		case '}':
-			nextSymbolSafe();
-			t.type = Token::Type::bracket_right;
-			t.representation = "token }";
-			return t;
-		case '(':
-			nextSymbolSafe();
-			t.type = Token::Type::paren_left;
-			t.representation = "token (";
-			return t;
-		case ')':
-			nextSymbolSafe();
-			t.type = Token::Type::paren_right;
-			t.representation = "token )";
-			return t;
-		case '.':
-			nextSymbolSafe();
-			t.type = Token::Type::operator_dot;
-			t.representation = "operator .";
-			return t;
-		case ',':
-			nextSymbolSafe();
-			t.type = Token::Type::operator_comma;
-			t.representation = "operator ,";
-			return t;
-		case ';':
-			nextSymbolSafe();
-			t.type = Token::Type::operator_semicolon;
-			t.representation = "token ;";
-			return t;
-		case '+':
-			nextSymbolSafe();
-			t.type = Token::Type::operator_plus;
-			t.representation = "operator +";
-			return t;
-		case '*':
-			nextSymbolSafe();
-			t.type = Token::Type::operator_multiply;
-			t.representation = "operator *";
-			return t;
-		case '/':
-			nextSymbolSafe();
-			t.type = Token::Type::operator_divide;
-			t.representation = "operator /";
-			return t;
-		case '~':
-			nextSymbolSafe();
-			t.type = Token::Type::operator_concat;
-			t.representation = "operator ~";
-			return t;
-		case '&':
-			nextSymbolSafe();
-			t.type = Token::Type::operator_and;
-			t.representation = "operator &";
-			return t;
-		case '|':
-			nextSymbolSafe();
-			t.type = Token::Type::operator_or;
-			t.representation = "operator |";
-			return t;
-		}
-		std::cout << "???: " << symbol << std::endl;
-		nextSymbolSafe();
-		return t;
-	}
-	else {
-		Token t(Token::Type::eof, "token eof");
-		t.column = source.getColumnNumber();
-		t.line = source.getLineNumber();
-		return t;
-	}
+std::string Lexer::getSourcePointer() {
+    return "(line: " + std::to_string(source.getLineNumber()) + ", column: " + std::to_string(source.getColumnNumber()) + ")";
 }

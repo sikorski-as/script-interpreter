@@ -11,7 +11,7 @@ public:
     explicit Expression() = default;
 
     Expression(Token::Type unaryOperator, Assignable::ptr operand)
-    : operators(unaryOperator), operands({operand})
+    : operators({unaryOperator}), operands({operand})
     {
 
     }
@@ -24,6 +24,14 @@ public:
 
     Type getType() const override{
         return Type::expression;
+    }
+
+    void addOperator(Token::Type operatorType){
+        operators.push_back(operatorType);
+    }
+
+    void addOperand(Assignable::ptr operand){
+        operands.push_back(operand);
     }
 
     std::vector<Token::Type> operators;

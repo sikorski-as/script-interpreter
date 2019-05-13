@@ -7,34 +7,12 @@ class Token
 {
 public:
 	enum class Type {
-		eof,
-		unknown,
-		identifier,
+		eof, unknown, identifier,
 
-		paren_left,    // (
-		paren_right,   // )
+		paren_left, paren_right, bracket_left, bracket_right, // (, ), {, }
 
-		bracket_left,  // {
-		bracket_right, // }
-
-		keyword_if,
-		keyword_else,
-		keyword_elif,
-		keyword_while,
-		keyword_return,
-		keyword_true,
-		keyword_false,
-
-		/*
-		keyword_void, 
-		keyword_bool,
-		keyword_int,
-		keyword_float,
-		keyword_string,
-		keyword_network,
-		keyword_algorithm,
-		keyword_evaluator,
-		*/
+		keyword_if, keyword_else, keyword_elif, keyword_while,
+		keyword_return, keyword_true, keyword_false,
 
 		const_int, // -?[1-9][0-9]*
 		const_float, // -?[1-9][0-9]*.[0-9]*

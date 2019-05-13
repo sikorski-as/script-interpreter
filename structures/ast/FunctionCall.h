@@ -9,6 +9,8 @@
 
 class FunctionCall : public Assignable, public Statement{
 public:
+    typedef std::vector<Assignable::ptr> ArgumentsList;
+
     explicit FunctionCall() = default;
 
     FunctionCall(std::string functionName, std::initializer_list<Assignable::ptr> arguments = {})

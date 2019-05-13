@@ -2,12 +2,15 @@
 #define TKOM_INTERPRETER_PROGRAM_H
 
 #include <vector>
+#include <memory>
 #include "ASTNode.h"
 #include "FunctionDefinition.h"
 #include "Statement.h"
 
 class Program : public ASTNode {
 public:
+    typedef std::shared_ptr<Program> ptr;
+
     Program() = default;
 
 	Type getType() const override {

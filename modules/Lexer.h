@@ -24,14 +24,22 @@ class Lexer
 	Token checkIfLessOrLessEqual();
 	Token checkIfGreaterOrGreaterEqual();
 
+	bool hasBufferedToken;
+	Token bufferedToken;
+	Token buildToken();
+
+	std::string getSourcePointer();
 public:
 	Lexer(Source&);
 	~Lexer() = default;
+
+	void consumeToken();
 	Token getToken();
 
 	class LexerException : public std::exception {
 		std::string reason;
 	public:
+	    int line = 0, column = 0;
 		LexerException() : reason("Lexical analysis error") {}
 		LexerException(std::string reason) : reason(reason) {}
 		virtual const char * what() = 0;

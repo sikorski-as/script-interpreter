@@ -13,7 +13,7 @@ public:
 
     }
 
-    Type getType() override {
+    Type getType() const override {
         return Type::while_statement;
     }
 
