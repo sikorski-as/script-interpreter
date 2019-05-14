@@ -29,7 +29,8 @@ public:
             repr = "String literal: '" + std::get<std::string>(data.value) + "'";
         }
         else{
-            repr = "Boolean literal";
+            repr = "Boolean literal ";
+            repr += data.type == Token::Type::keyword_true ? "true" : "false";
         }
         return repr;
     };

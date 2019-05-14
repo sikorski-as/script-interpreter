@@ -72,6 +72,8 @@ private:
     Assignable::ptr parseAndExpression();
     Assignable::ptr parseIdentifierPrefixForAssignable();
 
+    Statement::ptr parseIdentifierPrefixForStatement();
+
     FunctionCall::ArgumentsList parseCallArguments();
 
 };

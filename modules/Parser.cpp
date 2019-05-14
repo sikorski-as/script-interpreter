@@ -74,7 +74,7 @@ void Parser::log(Parser::LogEntry entry) {
 void Parser::error(Parser::LogEntry entry) {
     log(entry);
     successAchieved = false;
-    std::cout << '\t' << entry.text << std::endl;
+    //std::cout << '\t' << entry.text << std::endl;
 }
 
 void Parser::errorWithTokenInfo(std::string message){
@@ -209,6 +209,7 @@ Statement::ptr Parser::parseStatement() {
     debug("Parsing statement");
 
     if(accept(Token::Type::identifier)){
+        std::cout << getToken().representation << std::endl;
         std::cout << "todo: identifier"; while(1);
     }
     else if(accept(Token::Type::keyword_while)){
@@ -262,6 +263,9 @@ Statement::ptr Parser::parseStatement() {
         return std::make_shared<ReturnStatement>(returnedValue);
     }
 
+    errorWithTokenInfo("Statement expected");
+    consumeToken();
+
     return nullptr;
 }
 
@@ -303,22 +307,24 @@ Assignable::ptr Parser::parseAssignable() {
 Assignable::ptr Parser::parseSimpleExpression() {
     debug("Parsing simple expression");
     auto orExpression = parseOrExpression();
-    if(accept({Token::Type::operator_plus,
+    while(accept({Token::Type::operator_plus,
                Token::Type::operator_minus,
                Token::Type::operator_or})){
         auto orOperator = getAndConsumeToken().type;
 
         auto secondOrExpression = parseOrExpression();
 
-        return buildBinaryExpression(orExpression, orOperator, secondOrExpression);
+        orExpression = buildBinaryExpression(orExpression, orOperator, secondOrExpression);
     }
+
     return orExpression;
 }
 
 Assignable::ptr Parser::parseOrExpression() {
     debug("Parsing or expression");
     auto andExpression = parseAndExpression();
-    if(accept({Token::Type::operator_multiply,
+
+    while(accept({Token::Type::operator_multiply,
                Token::Type::operator_divide,
                Token::Type::operator_and,
                Token::Type::operator_concat})){
@@ -326,7 +332,7 @@ Assignable::ptr Parser::parseOrExpression() {
 
         auto secondAndExpression = parseAndExpression();
 
-        return buildBinaryExpression(andExpression, andOperator, secondAndExpression);
+        andExpression = buildBinaryExpression(andExpression, andOperator, secondAndExpression);
     }
     return andExpression;
 }
@@ -396,7 +402,7 @@ Assignable::ptr Parser::parseIdentifierPrefixForAssignable() {
     if(accept(Token::Type::operator_dot)){
         consumeToken();
         std::string methodName = getIdentifierNameOrErrorWithTokenInfo("Expected and identifier with method name");
-        consumeToken(); // todo - czy tu powinien być brany następny token?
+        consumeToken();
 
         auto argumentsList = parseCallArguments();
         auto methodCall = std::make_shared<MethodCall>(name, methodName);
@@ -416,6 +422,15 @@ Assignable::ptr Parser::parseIdentifierPrefixForAssignable() {
 
     return std::make_shared<Variable>(name);
 }
+
+Statement::ptr Parser::parseIdentifierPrefixForStatement() {
+    debug("Parsing identifier, function call or method call for a statement");
+
+
+
+    return nullptr;
+}
+
 
 FunctionCall::ArgumentsList Parser::parseCallArguments() {
     debug("Parsing call arguments");
@@ -450,6 +465,5 @@ FunctionCall::ArgumentsList Parser::parseCallArguments() {
 }
 
 void Parser::debug(std::string msg) {
-    std::cout << msg << "/" << getToken().representation << std::endl;
+    //std::cout << msg << "/" << getToken().representation << std::endl;
 }
-

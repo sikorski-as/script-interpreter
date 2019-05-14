@@ -1,0 +1,10 @@
+void foo(float x, string str){
+    while(true){
+        return foo.bar(10, false, i < 10);
+    }
+    return;
+}
+
+int main(){
+    return 0 + 4 / (2 - 3);
+}

@@ -26,19 +26,21 @@ int main(int argc, const char* argv[])
 		return buffer.str();
 	};
 
-	//StringSource source("   int x = 0; void f_o_O(){}\nstring s = \"hello, there!_   \" {aa;\nf();\n evaluator ev_01();    .\"  ,\"");	
+	//StringSource source("   int x = 0; void f_o_O(){}\nstring s = \"hello, there!_   \" {aa;\nf();\n evaluator ev_01();    .\"  ,\"");
 	//StringSource source(fileToString("tests/test_valid.txt"));
 	//StringSource source(fileToString("tests/test_empty.txt"));
 	//StringSource source(fileToString("tests/test_unexpected_eof_float.txt"));
 	//StringSource source(fileToString("tests/test_unexpected_eof_string.txt"));
 	//StringSource source(fileToString("tests/test_expected_digit_float.txt"));
-	StringSource source("int main(){"
-                     "if(foo.boo((1.0+5+3), true))"
-                     "{"
+	/*StringSource source("int main(){"
+                     "if(foo.boo((1.0+5+3)*5/3, -true, lol))"
+                     "{while(i<5){return -15 ~ \"haha\";}"
                      ""
                      "}"
-                     "}");
+                     "}");*/
 	//StringSource source("void foo(int x, float f){if(true){} return (0+1) * 3;}int main(int argc){}int boo(){}");
+
+	StringSource source(fileToString("tests/editable.txt"));
 	Lexer lexer(source);
 	Parser parser(lexer);
 
@@ -69,7 +71,7 @@ int main(int argc, const char* argv[])
         }
 
         if(parser.success()){
-            std::cout << "Parser successfully parsed program" << std::endl;
+            std::cout << "Parser successfully parsed program" << std::endl << std::endl;
             printASTNode(program);
         }
         else{
