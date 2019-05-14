@@ -48,3 +48,5 @@ public:
 	Token(Type type = Token::Type::unknown, std::string="token unkown");
 	~Token() = default;
 };
+
+

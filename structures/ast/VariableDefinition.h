@@ -7,7 +7,7 @@
 
 class VariableDefinition : public Statement{
 public:
-    VariableDefinition(std::string name, std::string typeName, Assignable::ptr value)
+    VariableDefinition(std::string typeName, std::string name, Assignable::ptr value)
             : name(name), typeName(typeName), value(value)
     {
 
@@ -18,7 +18,7 @@ public:
     }
 
     std::string representation() const override {
-        return "Variable " + name + " definition of type " + typeName;
+        return "Definition of variable " + typeName + " " + name;
     };
 
     ChildrenList getChildren() override {

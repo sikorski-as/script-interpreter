@@ -6,7 +6,7 @@
 
 class VariableDeclaration : public Statement{
 public:
-    VariableDeclaration(std::string name, std::string typeName)
+    VariableDeclaration(std::string typeName, std::string name)
     : name(name), typeName(typeName)
     {
 
@@ -17,7 +17,7 @@ public:
     }
 
     std::string representation() const override {
-        return "Variable " + name + " declaration of type " + typeName;
+        return "Declaration of variable " + typeName + " " + name;
     };
 
     std::string name;

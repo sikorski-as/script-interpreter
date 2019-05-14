@@ -209,8 +209,7 @@ Statement::ptr Parser::parseStatement() {
     debug("Parsing statement");
 
     if(accept(Token::Type::identifier)){
-        std::cout << getToken().representation << std::endl;
-        std::cout << "todo: identifier"; while(1);
+        return parseIdentifierPrefixForStatement();
     }
     else if(accept(Token::Type::keyword_while)){
         consumeToken(); // consume while
@@ -257,6 +256,7 @@ Statement::ptr Parser::parseStatement() {
         }
 
         auto returnedValue = parseAssignable();
+
         acceptOrErrorWithTokenInfo(Token::Type::operator_semicolon, "Expected a semicolon");
         consumeToken();
 
@@ -424,13 +424,69 @@ Assignable::ptr Parser::parseIdentifierPrefixForAssignable() {
 }
 
 Statement::ptr Parser::parseIdentifierPrefixForStatement() {
-    debug("Parsing identifier, function call or method call for a statement");
+    debug("Parsing variable-associated instruction, function call or method call for a statement");
 
+    std::string identifierName = std::get<std::string>(getAndConsumeToken().value);
 
+    if(accept(Token::Type::operator_dot)){
+        consumeToken();
+        std::string methodName = getIdentifierNameOrErrorWithTokenInfo("Expected and identifier with method name");
+        consumeToken();
+
+        auto argumentsList = parseCallArguments();
+        auto methodCall = std::make_shared<MethodCall>(identifierName, methodName);
+
+        methodCall->arguments = std::move(argumentsList);
+
+        acceptOrErrorWithTokenInfo(Token::Type::operator_semicolon, "Expected a semicolon at the end of statement");
+        consumeToken();
+
+        return methodCall;
+    }
+    else if(accept(Token::Type::paren_left)){
+        auto functionCall = std::make_shared<FunctionCall>(identifierName);
+
+        auto argumentsList = parseCallArguments();
+        functionCall->arguments = std::move(argumentsList);
+
+        acceptOrErrorWithTokenInfo(Token::Type::operator_semicolon, "Expected a semicolon at the end of statement");
+        consumeToken();
+
+        return functionCall;
+    }
+    else if(accept(Token::Type::operator_assign)){
+        consumeToken();
+
+        auto rvalue = parseAssignable();
+
+        acceptOrErrorWithTokenInfo(Token::Type::operator_semicolon, "Expected a semicolon at the end of statement");
+        consumeToken();
+
+        return std::make_shared<VariableAssignment>(identifierName, rvalue);
+    }
+    else if(accept(Token::Type::identifier)){
+        std::string secondIdentifierName = std::get<std::string>(getAndConsumeToken().value);
+
+        if(accept(Token::Type::operator_semicolon)){
+            consumeToken();
+            return std::make_shared<VariableDeclaration>(identifierName, secondIdentifierName);
+        }
+        else if(accept(Token::Type::operator_assign)){
+            consumeToken();
+            auto rvalue = parseAssignable();
+
+            acceptOrErrorWithTokenInfo(Token::Type::operator_semicolon, "Expected a semicolon at the end of statement");
+            consumeToken();
+
+            return std::make_shared<VariableDefinition>(identifierName, secondIdentifierName, rvalue);
+        }
+    }
+
+    errorWithTokenInfo("Unexpected token when parsing a statement");
+    consumeToken();
 
     return nullptr;
 }
-
 
 FunctionCall::ArgumentsList Parser::parseCallArguments() {
     debug("Parsing call arguments");
@@ -465,5 +521,5 @@ FunctionCall::ArgumentsList Parser::parseCallArguments() {
 }
 
 void Parser::debug(std::string msg) {
-    //std::cout << msg << "/" << getToken().representation << std::endl;
+    // std::cout << msg << " (current token: " << getToken().representation << ")" << std::endl;
 }

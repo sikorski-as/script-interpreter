@@ -1,10 +1,24 @@
 void foo(float x, string str){
     while(true){
-        return foo.bar(10, false, i < 10);
+        foo();
+        foo.bar(10, 12);
+        int x;
+        int y = 5;
+        y = 7;
+        return foo.bar(10, -false, i < 10);
     }
     return;
 }
 
 int main(){
-    return 0 + 4 / (2 - 3);
+    if(afunction("234" ~ "abecadlo") > 5){
+        return 0 + 4 / (2 - 3);
+    }
+    else{
+        if(sin(x)){
+            return;
+        }
+        Network net;
+        net.load("german2_17.xml");
+    }
 }

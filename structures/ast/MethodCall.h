@@ -19,7 +19,7 @@ public:
     }
 
     std::string representation() const override {
-        return "Method call of " + objectName + "." + functionName;
+        return "Method call " + objectName + "." + functionName;
     };
 
     std::string objectName;

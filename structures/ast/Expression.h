@@ -35,6 +35,18 @@ public:
     }
 
     std::string representation() const override {
+        if(operators.size() == 1){
+            if(operands.size() == 1){
+                return "Expression (unary)";
+            }
+            else if(operands.size() == 2){
+                return "Expression (binary)";
+            }
+        }
+        else if (operators.size() == 2){
+            return "Expression (ternary)";
+        }
+
         return "Expression (number of operators: " + std::to_string(operators.size()) + ")";
     };
 

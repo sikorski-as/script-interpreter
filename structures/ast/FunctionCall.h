@@ -26,7 +26,7 @@ public:
     }
 
     std::string representation() const override {
-        return "Function call of " + functionName;
+        return "Function call " + functionName;
     };
 
     ChildrenList getChildren() override {
