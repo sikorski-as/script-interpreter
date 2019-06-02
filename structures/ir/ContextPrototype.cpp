@@ -1,8 +1,8 @@
-
 #include "ContextPrototype.h"
 
 void ContextPrototype::addVariable(ContextPrototype::VariablePrototype& varproto) {
     scopeVariables[varproto.second] = varproto;
+    functionArgsOrder.push_back(varproto);
 }
 
 

@@ -2,7 +2,8 @@
 #define TKOM_INTERPRETER_CONTEXTPROTOTYPE_H
 
 #include <string>
-#include <map>
+#include <vector>
+#include <unordered_map>
 #include <utility>
 
 class ContextPrototype {
@@ -20,10 +21,15 @@ public:
 
     bool hasReturnStatement();
     void returnStatementSpotted();
+
+    std::vector<VariablePrototype> functionArgsOrder; // {name_of_arg1, ..., name_of_argn}
 private:
     bool hasReturn;
     ContextPrototype* upperContext;
-    std::map<std::string, VariablePrototype> scopeVariables; // variable name -> (variable_type, variable_name)
+
+    // variable_name -> (variable_type, variable_name)
+    // can be changed to std::map
+    std::unordered_map<std::string, VariablePrototype> scopeVariables;
 };
 
 

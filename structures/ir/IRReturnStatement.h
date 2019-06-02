@@ -13,6 +13,10 @@ public:
     }
 
     // todo: execute()
+
+    class ReturnException {
+        IRAssignable::ptr value;
+    };
 };
 
 #endif //TKOM_INTERPRETER_IRRETURNSTATEMENT_H

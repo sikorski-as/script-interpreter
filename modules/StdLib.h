@@ -4,13 +4,15 @@
 #include <unordered_map>
 #include <string>
 #include <vector>
+#include <utility>
 
 using namespace std;
 
 class StdLib {
 public:
     static bool hasFunction(std::string&);
-    static std::unordered_map<std::string, bool> STDLIB_FUNCTIONS;
+    //static std::unordered_map<std::string, bool> STDLIB_FUNCTIONS;
+    static std::unordered_map<string, vector<std::string>> STDLIB_FUNCTIONS;
 
     static bool hasType(std::string&);
     static std::unordered_map<std::string, bool> STDLIB_TYPES;

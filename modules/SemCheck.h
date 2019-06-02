@@ -32,13 +32,12 @@ private:
 
     std::string currentFunctionName;
     std::string currentFunctionReturnType;
+    std::vector<std::pair<std::string, std::string>> currentFunctionParamsPrototype;
 
     IRFunction::ptr checkFunctionDefinition(FunctionDefinition::ptr);
 
     IRStatement::StatementsList checkStatements(ContextPrototype&, BlockStatement::ptr);
     IRStatement::ptr checkStatement(ContextPrototype&, Statement::ptr);
-
-    IRAssignable::ptr checkAssignable(ContextPrototype&, Assignable::ptr); // todo!
 
     IRStatement::ptr checkIfStatement(ContextPrototype&, Statement::ptr);
     IRStatement::ptr checkWhileStatement(ContextPrototype&, Statement::ptr);
@@ -47,7 +46,15 @@ private:
     IRStatement::ptr checkVarAssignment(ContextPrototype&, Statement::ptr);
     IRStatement::ptr checkReturnStatement(ContextPrototype&, Statement::ptr);
 
-    IRStatement::ptr checkFunctionCall(ContextPrototype&, Statement::ptr);
+    IRFunctionCall::ptr checkFunctionCall(ContextPrototype&, ASTNode::ptr);
+    //IRStatement::ptr checkMethodCall(ContextPrototype&, Statement::ptr); // todo!
+
+    IRAssignable::ptr checkAssignable(ContextPrototype&, Assignable::ptr);
+    IRAssignable::ptr checkLiteral(ContextPrototype&, Assignable::ptr);
+    IRAssignable::ptr checkVariable(ContextPrototype&, Assignable::ptr);
+    IRAssignable::ptr checkExpression(ContextPrototype&, Assignable::ptr);
+
+    bool checkTypesPair(IRAssignable::ptr first, IRAssignable::ptr second, std::string firstType, std::string secondType);
 
 };
 

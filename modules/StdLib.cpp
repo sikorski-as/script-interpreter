@@ -1,13 +1,12 @@
-
 #include "StdLib.h"
 
-std::unordered_map<std::string, bool> StdLib::STDLIB_FUNCTIONS = {
-        {"print", true},
-        {"time", true},
-        {"Network", true},
-        {"Algorithm", true},
-        {"Evaluator", true},
-        {"random", true},
+unordered_map<string, vector<std::string>> StdLib::STDLIB_FUNCTIONS = {
+        {"print", {"void", "print", "string"}},
+        {"time", {"int", "time"}},
+        {"random", {"int", "random"}},
+        {"Network", {"Network", "Network"}},
+        {"Algorithm", {"Algorithm", "Algorithm"}},
+        {"Evaluator", {"Evaluator", "Evaluator"}}
 };
 
 bool StdLib::hasFunction(std::string & fname) {

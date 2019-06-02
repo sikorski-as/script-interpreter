@@ -3,15 +3,19 @@
 
 #include <memory>
 #include <string>
+#include "IRExecutable.h"
 
-class IRAssignable {
+class IRAssignable : public IRExecutable{
 public:
     typedef std::shared_ptr<IRAssignable> ptr;
+    std::string assignableType;
 
-    // todo: execute() implementation + inheritance
+    IRObject::ptr execute(IRContext* context) override {
+        return nullptr; // todo
+    }
 
-    std::string getType(){
-        return "none"; // todo
+    virtual std::string getType(){
+        return assignableType;
     }
 };
 

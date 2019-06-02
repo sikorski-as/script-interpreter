@@ -1,11 +1,14 @@
 #ifndef TKOM_INTERPRETER_LITERAL_H
 #define TKOM_INTERPRETER_LITERAL_H
 
+#include <memory>
 #include "Assignable.h"
 #include "../Token.h"
 
 class Literal : public Assignable{
 public:
+    typedef std::shared_ptr<Literal> ptr;
+
     explicit Literal() = default;
     Literal(Token token)
     : data(token)
@@ -41,6 +44,23 @@ public:
     }
 
     Token data;
+
+    std::string getDataType(){
+        if(std::holds_alternative<bool>(data.value)){
+            return "bool";
+        }
+        else if(std::holds_alternative<int>(data.value)){
+            return "int";
+        }
+        else if(std::holds_alternative<float>(data.value)){
+            return "float";
+        }
+        else if(std::holds_alternative<std::string>(data.value)){
+            return "string";
+        }
+
+        return "none";
+    }
 };
 
 

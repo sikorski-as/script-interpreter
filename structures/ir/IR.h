@@ -12,6 +12,9 @@
 #include "IRVarDefinition.h"
 #include "IRVarAssignment.h"
 #include "IRReturnStatement.h"
-
+#include "IRFunctionCall.h"
+#include "IRLiteral.h"
+#include "IRVariable.h"
+#include "IRExpression.h"
 
 #endif //TKOM_INTERPRETER_IR_H
