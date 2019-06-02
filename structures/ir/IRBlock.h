@@ -1,0 +1,8 @@
+#ifndef TKOM_INTERPRETER_IRBLOCK_H
+#define TKOM_INTERPRETER_IRBLOCK_H
+
+class IRBlock {
+
+};
+
+#endif //TKOM_INTERPRETER_IRBLOCK_H

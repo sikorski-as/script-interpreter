@@ -1,0 +1,18 @@
+int max(int a, int b){
+    if(a > b){
+        return a;
+    }
+    else{
+        return b;
+    }
+}
+
+void main()
+{
+    int x;
+    int i;
+    while(i < 3){
+        int a = max(3, 5);
+        i = i + 1;
+    }
+}

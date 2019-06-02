@@ -1,7 +1,7 @@
 void foo(float x, string str){
     while(true){
         foo();
-        foo.bar(10, 12);
+        foo.bar(-10, 12);
         int x;
         int y = 5;
         y = 7;
@@ -12,7 +12,7 @@ void foo(float x, string str){
 
 int main(){
     if(afunction("234" ~ "abecadlo") > 5){
-        return 0 + 4 / (2 - 3);
+        return 0 * 4 + (2 - 3);
     }
     else{
         if(sin(x)){

@@ -37,10 +37,10 @@ public:
     std::string representation() const override {
         if(operators.size() == 1){
             if(operands.size() == 1){
-                return "Expression (unary)";
+                return std::string("Expression with unary ") + TOKEN_REPRESENTATION.at(operators[0]);
             }
             else if(operands.size() == 2){
-                return "Expression (binary)";
+                return std::string("Expression with binary ") + TOKEN_REPRESENTATION.at(operators[0]);
             }
         }
         else if (operators.size() == 2){

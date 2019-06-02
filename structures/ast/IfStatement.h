@@ -8,10 +8,7 @@
 class IfStatement : public Statement{
 public:
     IfStatement(Assignable::ptr condition, BlockStatement::ptr trueBlock, BlockStatement::ptr falseBlock)
-    : condition(condition), trueBlock(trueBlock), falseBlock(falseBlock)
-    {
-
-    }
+    : condition(condition), trueBlock(trueBlock), falseBlock(falseBlock){}
 
     ASTNode::Type getType() const override {
         return Type::if_statement;

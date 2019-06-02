@@ -9,7 +9,8 @@
 class FunctionDefinition : public ASTNode{
 public:
     typedef std::shared_ptr<FunctionDefinition> ptr;
-    typedef std::vector<std::pair<std::string, std::string>> ArgumentsListPrototype;
+    typedef std::pair<std::string, std::string> ArgumentPrototype;
+    typedef std::vector<ArgumentPrototype> ArgumentsListPrototype;
 
     explicit FunctionDefinition() = default;
 
@@ -34,6 +35,10 @@ public:
     ChildrenList getChildren() override {
         auto children = ChildrenList({body});
         return children;
+    }
+
+    std::string getTypeAndName(){
+        return returnTypeName + " " + functionName;
     }
 
     std::string returnTypeName;

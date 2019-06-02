@@ -53,7 +53,7 @@ private:
     void errorWithTokenInfo(std::string);
 
     bool accept(Token::Type);
-    bool accept(const std::initializer_list<Token::Type>&);
+    bool accept(const std::initializer_list<Token::Type>&); // todo: zmiana nazwy
 
     bool acceptOrErrorWithTokenInfo(Token::Type, std::string errorMessage);
     bool acceptOrErrorWithTokenInfo(const std::initializer_list<Token::Type>&, std::string);
