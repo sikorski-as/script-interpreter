@@ -3,6 +3,7 @@ void foo(){
 }
 
 int max(int a, int b){
+    foo();
     if(a > b){
         return a;
     }
@@ -15,13 +16,10 @@ void main()
 {
 
     print("hello" ~ " " ~ "world");
-    int x;
     int i;
     while(i < 3){
-        int a = max(3, 5);
+        int a = max(i + 3, 5);
         i = i + 1;
     }
-    if(1 == true){
-        random();
-    }
+
 }

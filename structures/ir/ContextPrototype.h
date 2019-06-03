@@ -5,6 +5,8 @@
 #include <vector>
 #include <unordered_map>
 #include <utility>
+#include "IRObject.h"
+#include "IRContext.h"
 
 class ContextPrototype {
 public:
@@ -17,7 +19,7 @@ public:
     bool isVariableInScope(std::string&);
     std::string getVariableType(std::string&);
 
-    // todo: createContextInstance
+    IRContext* createInstance(std::vector<IRObject::ptr> values);
 
     bool hasReturnStatement();
     void returnStatementSpotted();

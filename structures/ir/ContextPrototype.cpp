@@ -39,3 +39,11 @@ void ContextPrototype::returnStatementSpotted() {
         upperContext->returnStatementSpotted();
     }
 }
+
+IRContext *ContextPrototype::createInstance(std::vector<IRObject::ptr> values) {
+    auto context = new IRContext();
+    for(int i = 0; i < values.size(); i++){
+        context->addSymbol(functionArgsOrder[i].second, values[i]);
+    }
+    return context;
+}

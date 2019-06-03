@@ -9,8 +9,9 @@
 #include "ContextPrototype.h"
 #include "IRExecutable.h"
 #include "IRStatement.h"
+#include "IRAssignable.h"
 
-class IRFunction : public IRExecutable{
+class IRFunction{
 public:
     typedef std::shared_ptr<IRFunction> ptr;
     typedef std::unordered_map<std::string, IRFunction::ptr> map;
@@ -22,10 +23,9 @@ public:
     ContextPrototype contextProto;
     StatementsList statements;
 
-    IRObject::ptr execute(IRContext*) override{
-        // todo
+    /*IRObject::ptr execute(IRContext*, IRAssignable::ExecutableList) override{
         return nullptr;
-    };
+    };*/
 };
 
 #endif //TKOM_INTERPRETER_IRFUNCTION_H

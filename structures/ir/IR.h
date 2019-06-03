@@ -1,9 +1,9 @@
 #ifndef TKOM_INTERPRETER_IR_H
 #define TKOM_INTERPRETER_IR_H
 
-#include "IRProgram.h"
-#include "IRFunction.h"
-#include "IRContext.h"
+#include "IRProgram.h" // execution done
+#include "IRFunction.h" // execution done
+#include "IRContext.h" //
 #include "IRAssignable.h"
 #include "IRStatement.h"
 #include "IRIfStatement.h"
@@ -16,5 +16,7 @@
 #include "IRLiteral.h"
 #include "IRVariable.h"
 #include "IRExpression.h"
+
+#include "IRObject.h"
 
 #endif //TKOM_INTERPRETER_IR_H

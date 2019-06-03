@@ -1,0 +1,8 @@
+#ifndef TKOM_INTERPRETER_EVALUATOR_H
+#define TKOM_INTERPRETER_EVALUATOR_H
+
+class Evaluator {
+
+};
+
+#endif //TKOM_INTERPRETER_EVALUATOR_H

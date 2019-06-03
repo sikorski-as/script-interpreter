@@ -1,0 +1,10 @@
+#ifndef TKOM_INTERPRETER_ALGORITHM_H
+#define TKOM_INTERPRETER_ALGORITHM_H
+
+
+class Algorithm {
+
+};
+
+
+#endif //TKOM_INTERPRETER_ALGORITHM_H

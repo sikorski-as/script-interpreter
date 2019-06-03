@@ -55,7 +55,6 @@ private:
     IRAssignable::ptr checkExpression(ContextPrototype&, Assignable::ptr);
 
     bool checkTypesPair(IRAssignable::ptr first, IRAssignable::ptr second, std::string firstType, std::string secondType);
-
 };
 
 #endif //TKOM_INTERPRETER_SEMCHECK_H
