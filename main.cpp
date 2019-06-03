@@ -57,6 +57,15 @@ int main(int argc, const char* argv[])
         for(auto& entry: semcheck_log){
             std::cout << entry.text << std::endl;
         }
+        if(semcheck.success()){
+            std::cout << "Starting execution..." << std::endl;
+            executable->run();
+            std::cout << "Execution finished..." << std::endl;
+        }
+        else{
+            std::cout << "Semcheck failed" << std::endl;
+            return 1;
+        }
 
 	}
 	catch (Lexer::UnexpectedEndOfFile& e) {

@@ -10,10 +10,6 @@ public:
     typedef std::shared_ptr<IRAssignable> ptr;
     std::string assignableType;
 
-    IRObject::ptr execute(IRContext* context) override {
-        return nullptr; // todo
-    }
-
     virtual std::string getType(){
         return assignableType;
     }

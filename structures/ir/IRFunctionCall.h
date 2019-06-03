@@ -28,8 +28,29 @@ public:
         return returnType;
     }
 
-    IRObject::ptr execute(IRContext*) override{
-        return nullptr; // todo
+    IRObject::ptr execute(IRContext* context) override{
+        IRStatement::debug("Executing function " + functionName);
+
+        std::vector<IRObject::ptr> args;
+        for(auto& arg: arguments){
+            args.push_back(arg->execute(context));
+        }
+
+        if(StdLib::hasFunction(functionName)){
+            return StdLib::libraryFunctionCall(functionName, args);
+        }
+        else{
+            auto function = context->getFunction(functionName);
+            try{
+                function->execute(context, args);
+            }
+            catch(IRReturnStatement::ReturnException e){
+                return e.value;
+            }
+        }
+        IRStatement::debug("Execution of function " + functionName + " ended");
+
+        return nullptr;
     }
 };
 

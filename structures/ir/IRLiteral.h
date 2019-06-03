@@ -20,7 +20,17 @@ public:
         return literal->getDataType();
     }
 
-    // todo: execute
+    IRObject::ptr execute(IRContext*) override{
+        auto dtype = literal->getDataType();
+        auto object = std::make_shared<IRObject>();
+
+        if(dtype == "bool" || dtype == "int" || dtype == "float" || dtype == "string"){
+            object->value = literal->data.value;
+        }
+
+        object->type = dtype;
+        return object;
+    }
 };
 
 #endif //TKOM_INTERPRETER_IRLITERAL_H

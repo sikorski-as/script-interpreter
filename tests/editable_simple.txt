@@ -2,8 +2,13 @@ void foo(){
 
 }
 
+int bar(){
+    return 1;
+}
+
 int max(int a, int b){
-    foo();
+    return 0;
+
     if(a > b){
         return a;
     }
@@ -14,12 +19,21 @@ int max(int a, int b){
 
 void main()
 {
+    foo();
+    bar();
+    Network net = Network("siec.xml");
+    string s = "a" ~ "b";
 
-    print("hello" ~ " " ~ "world");
-    int i;
-    while(i < 3){
-        int a = max(i + 3, 5);
-        i = i + 1;
+    print(s);
+
+    int i = 99;
+    print_int(i);
+    i = max(2, 3);
+    print_int(i);
+
+    while(!true){
+        int r = random();
+        print_int(r);
     }
 
 }

@@ -3,6 +3,7 @@
 
 #include <string>
 #include "IRStatement.h"
+#include "IRObject.h"
 
 class IRVarDeclaration : public IRStatement{
     std::string typeName, name;
@@ -12,7 +13,29 @@ public:
         name = variable_name;
     }
 
-    // todo: execute()
+    IRObject::ptr execute(IRContext* context) override {
+        std::cout << "Executing var declaration..." << std::endl;
+
+        auto object = std::make_shared<IRObject>();
+        object->type = typeName;
+
+        if(typeName == "bool"){
+            object->value = false;
+        }
+        else if(typeName == "int"){
+            object->value = 0;
+        }
+        else if(typeName == "float"){
+            object->value = 0.0f;
+        }
+        else if(typeName == "string"){
+            object->value = std::string("");
+        }
+
+        context->addSymbol(name, object);
+
+        return nullptr;
+    }
 };
 
 

@@ -1,12 +1,16 @@
 #include "StdLib.h"
+#include <iostream>
+#include <ctime>
+#include <cstdlib>
 
 unordered_map<string, vector<std::string>> StdLib::STDLIB_FUNCTIONS = {
         {"print", {"void", "print", "string"}},
+        {"print_int", {"void", "print_int", "int"}},
         {"time", {"int", "time"}},
         {"random", {"int", "random"}},
-        {"Network", {"Network", "Network"}},
-        {"Algorithm", {"Algorithm", "Algorithm"}},
-        {"Evaluator", {"Evaluator", "Evaluator"}}
+        {"Network", {"Network", "Network", "string"}},
+        {"Algorithm", {"Algorithm", "Algorithm", "string"}},
+        {"Evaluator", {"Evaluator", "Evaluator", "string"}}
 };
 
 bool StdLib::hasFunction(std::string & fname) {
@@ -58,3 +62,47 @@ std::unordered_map<string, unordered_map<string, vector<std::string>>> StdLib::S
             }
         }
 };
+
+IRObject::ptr StdLib::libraryFunctionCall(std::string &fname, std::vector<IRObject::ptr> args) {
+    if(fname == "print"){
+        std::cout << std::get<std::string>(args[0]->value) << std::endl;
+        return nullptr;
+    }
+    else if(fname == "print_int"){
+        std::cout << std::get<int>(args[0]->value) << std::endl;
+        return nullptr;
+    }
+    else if(fname == "Network"){
+        std::cout << "<calling Network(string) library function>" << std::endl;
+        auto object = std::make_shared<IRObject>();
+        object->type = "Network";
+        return object;
+    }
+    else if(fname == "Algorithm"){
+        std::cout << "<calling Algorithm(string) library function>" << std::endl;
+        auto object = std::make_shared<IRObject>();
+        object->type = "Algorithm";
+        return object;
+    }
+    else if(fname == "Evaluator"){
+        std::cout << "<calling Evaluator(string) library function>" << std::endl;
+        auto object = std::make_shared<IRObject>();
+        object->type = "Evaluator";
+        return object;
+    }
+    else if(fname == "random"){
+        auto object = std::make_shared<IRObject>();
+        srand(time(NULL));
+        object->value = static_cast<int>(rand());
+        object->type = "int";
+        return object;
+    }
+    else if(fname == "time"){
+        auto object = std::make_shared<IRObject>();
+        object->value = static_cast<int>(time(NULL));
+        object->type = "int";
+        return object;
+    }
+
+    return nullptr;
+}

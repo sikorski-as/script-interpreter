@@ -15,7 +15,15 @@ public:
         value = val;
     }
 
-    // todo: execute()
+    IRObject::ptr execute(IRContext* context) override {
+        debug("Executing variable " + name + " definiton");
+
+        auto object = std::make_shared<IRObject>(*value->execute(context)); // copy assignment
+        object->type = typeName;
+        context->addSymbol(name, object);
+
+        return nullptr;
+    }
 };
 
 #endif //TKOM_INTERPRETER_IRVARDEFINITION_H

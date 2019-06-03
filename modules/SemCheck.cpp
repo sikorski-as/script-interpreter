@@ -20,6 +20,7 @@ std::vector<SemCheck::LogEntry> SemCheck::getLog() {
 }
 
 IRProgram::ptr SemCheck::check(Program::ptr syntaxTree) {
+    this->successAchieved = true;
     this->syntaxTree = syntaxTree;
     this->definedFunctions.clear();
 
