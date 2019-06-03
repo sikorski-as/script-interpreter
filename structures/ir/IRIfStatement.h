@@ -31,7 +31,7 @@ public:
         }
         else{
             debug("Executing else block");
-            for(auto& s: trueBlock){
+            for(auto& s: falseBlock){
                 s->execute(thisContext);
             }
         }

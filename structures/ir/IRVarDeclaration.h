@@ -14,7 +14,7 @@ public:
     }
 
     IRObject::ptr execute(IRContext* context) override {
-        std::cout << "Executing var declaration..." << std::endl;
+        debug("Executing declaration of variable " + name);
 
         auto object = std::make_shared<IRObject>();
         object->type = typeName;

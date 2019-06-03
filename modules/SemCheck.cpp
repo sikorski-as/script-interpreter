@@ -57,7 +57,7 @@ IRProgram::ptr SemCheck::check(Program::ptr syntaxTree) {
 
 IRFunction::ptr SemCheck::checkFunctionDefinition(FunctionDefinition::ptr fundef) {
     auto ir_fun = std::make_shared<IRFunction>();
-    log({"Checking function definition..."});
+    //log({"Checking function definition..."});
 
     currentFunctionName = fundef->functionName;
     currentFunctionReturnType = fundef->returnTypeName;
@@ -458,13 +458,14 @@ IRAssignable::ptr SemCheck::checkExpression(ContextPrototype& context, Assignabl
             if(oper == ttype::operator_equal || oper == ttype::operator_not_equal){
                 if(checkTypesPair(first, second, "int", "int")
                     || checkTypesPair(first, second, "float", "float")
-                    || checkTypesPair(first, second, "bool", "bool")){
+                       || checkTypesPair(first, second, "bool", "bool")
+                          || checkTypesPair(first, second, "string", "string")){
 
                     expr->assignableType = "bool";
                     return expr;
                 }
 
-                error({"Comparison operator requires two identical numeric types or bool type as operands"});
+                error({"Comparison operator requires two identical numeric types, bool type or string type as operands"});
                 return nullptr;
             }
             else if(oper == ttype::operator_less

@@ -6,10 +6,17 @@ IRContext::IRContext(IRContext *upper) {
 
 void IRContext::addSymbol(std::string& name, IRObject::ptr value) {
     scopeSymbols[name] = value;
+    // scopeSymbols[name] = std::make_shared<IRObject>(*value);
 }
 
 IRObject::ptr IRContext::getSymbol(std::string& name) {
-    return scopeSymbols[name];
+    if(scopeSymbols.count(name) > 0){
+        return scopeSymbols[name];
+    }
+    if(upperContext){
+        return upperContext->getSymbol(name);
+    }
+    return nullptr;
 }
 
 std::shared_ptr<IRFunction> IRContext::getFunction(std::string& name) {

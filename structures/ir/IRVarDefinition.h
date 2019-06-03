@@ -16,7 +16,7 @@ public:
     }
 
     IRObject::ptr execute(IRContext* context) override {
-        debug("Executing variable " + name + " definiton");
+        debug("Executing definiton of variable " + name);
 
         auto object = std::make_shared<IRObject>(*value->execute(context)); // copy assignment
         object->type = typeName;

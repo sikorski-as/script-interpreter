@@ -1,3 +1,18 @@
+int fibo(int i){
+    if(i < 1){
+        return -1;
+    }
+    if(i == 0){
+        return 0;
+    }
+    if(i == 1){
+        return 1;
+    }
+
+    sleep(2);
+    return fibo(i - 1) + fibo(i - 2);
+}
+
 void foo(){
 
 }
@@ -7,8 +22,6 @@ int bar(){
 }
 
 int max(int a, int b){
-    return 0;
-
     if(a > b){
         return a;
     }
@@ -19,21 +32,32 @@ int max(int a, int b){
 
 void main()
 {
+
+
     foo();
     bar();
     Network net = Network("siec.xml");
-    string s = "a" ~ "b";
 
-    print(s);
+    string s = get_string();
 
-    int i = 99;
-    print_int(i);
-    i = max(2, 3);
-    print_int(i);
-
-    while(!true){
-        int r = random();
-        print_int(r);
+    if(s == "tkom"){
+        println("wprowadzono nazwe przedmiotu");
+    }
+    else{
+        println("wprowadzono inny napis");
     }
 
+    sleep(3);
+
+    int number1 = get_int();
+    int number2 = get_int();
+    print("bigger number:"); print_int(max(number1, number2));
+
+    sleep(3);
+
+    int i = 0;
+    while(i < 10){
+        print("iteration #"); println_int(i);
+        i = i + 1;
+    }
 }

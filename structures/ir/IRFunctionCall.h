@@ -41,10 +41,14 @@ public:
         }
         else{
             auto function = context->getFunction(functionName);
+            //auto new_context = function->contextProto.createInstance(args);
+            //new_context->upperContext = context;
+
             try{
                 function->execute(context, args);
             }
             catch(IRReturnStatement::ReturnException e){
+                //delete new_context;
                 return e.value;
             }
         }

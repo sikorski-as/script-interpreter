@@ -28,5 +28,31 @@ add_executable(tkom_interpreter
         structures/ast/Literal.h
         structures/ast/Variable.h
         structures/ast/FunctionCall.h
-        structures/ast/MethodCall.h structures/ast/AST.h structures/ast/ASTNodePrinter.h modules/SemCheck.cpp modules/SemCheck.h structures/ir/IRFunction.h structures/ir/IR.h structures/ir/IRProgram.cpp structures/ir/IRProgram.h structures/ir/IRContext.cpp structures/ir/IRContext.h modules/StdLib.cpp modules/StdLib.h structures/ir/ContextPrototype.cpp structures/ir/ContextPrototype.h structures/ir/IRExecutable.h structures/ir/IRObject.cpp structures/ir/IRObject.h structures/ir/IRStatement.h structures/ir/IRBlock.h structures/ir/IRAssignable.h structures/ir/IRIfStatement.h structures/ir/IRWhileStatement.h structures/ir/IRVarDeclaration.h structures/ir/IRVarDefinition.h structures/ir/IRVarAssignment.h structures/ir/IRReturnStatement.h structures/ir/IRFunctionCall.h structures/ir/IRLiteral.h structures/ir/IRVariable.h structures/ir/IRExpression.h stdlib/Network.cpp stdlib/Network.h stdlib/Algorithm.cpp stdlib/Algorithm.h stdlib/Evaluator.cpp stdlib/Evaluator.h stdlib/includes.h)
+        structures/ast/MethodCall.h
+        structures/ast/AST.h
+        structures/ast/ASTNodePrinter.h
+
+        modules/SemCheck.cpp
+        modules/SemCheck.h
+
+        structures/ir/IRFunction.h
+        structures/ir/IR.h
+        structures/ir/IRProgram.cpp
+        structures/ir/IRProgram.h
+        structures/ir/IRContext.cpp
+        structures/ir/IRContext.h
+        modules/StdLib.cpp
+        modules/StdLib.h
+        structures/ir/ContextPrototype.cpp
+        structures/ir/ContextPrototype.h
+        structures/ir/IRExecutable.h
+        structures/ir/IRObject.cpp
+        structures/ir/IRObject.h
+        structures/ir/IRStatement.h
+        structures/ir/IRBlock.h
+        structures/ir/IRAssignable.h
+        structures/ir/IRIfStatement.h
+        structures/ir/IRWhileStatement.h
+        structures/ir/IRVarDeclaration.h structures/ir/IRVarDefinition.h structures/ir/IRVarAssignment.h structures/ir/IRReturnStatement.h structures/ir/IRFunctionCall.h structures/ir/IRLiteral.h structures/ir/IRVariable.h structures/ir/IRExpression.h stdlib/Network.cpp stdlib/Network.h stdlib/Algorithm.cpp stdlib/Algorithm.h stdlib/Evaluator.cpp stdlib/Evaluator.h stdlib/includes.h
+        settings.h)
 

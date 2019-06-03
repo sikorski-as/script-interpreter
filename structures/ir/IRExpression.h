@@ -21,6 +21,7 @@ public:
     }
 
     IRObject::ptr execute(IRContext* context) override{
+        debug("Evaluating expression");
         using tt = Token::Type;
         if(second == nullptr){ // unary not
             if(expressionOperator == tt::operator_not){
@@ -31,20 +32,125 @@ public:
             }
         }
         else{
+            auto object1 = first->execute(context);
+            auto object2 = second->execute(context);
+            auto object = std::make_shared<IRObject>();
+
             if(expressionOperator == tt::operator_concat){
-                auto object1 = first->execute(context);
-                auto object2 = second->execute(context);
                 std::string combined = std::get<std::string>(object1->value) + std::get<std::string>(object2->value);
-                auto object = std::make_shared<IRObject>();
                 object->type = "string";
                 object->value = combined;
 
                 return object;
             }
+            else if(expressionOperator == tt::operator_equal){
+                object->type = "bool";
+                object->value = object1->value == object2->value;
+                return object;
+            }
+            else if(expressionOperator == tt::operator_not_equal){
+                object->type = "bool";
+                object->value = object1->value != object2->value;
+                return object;
+            }
             else if(expressionOperator == tt::operator_less){
-//                auto object = std::make_shared<IRObject>();
-//                object->type = "bool";
-//                object->value =
+                object->type = "bool";
+                if(first->assignableType == "int"){
+                    object->value = std::get<int>(object1->value) < std::get<int>(object2->value);
+                    return object;
+                }
+                else if(first->assignableType == "float"){
+                    object->value = std::get<float>(object1->value) < std::get<float>(object2->value);
+                    return object;
+                }
+                return nullptr;
+            }
+            else if(expressionOperator == tt::operator_less_equal){
+                object->type = "bool";
+                if(first->assignableType == "int"){
+                    object->value = std::get<int>(object1->value) <= std::get<int>(object2->value);
+                    return object;
+                }
+                else if(first->assignableType == "float"){
+                    object->value = std::get<float>(object1->value) <= std::get<float>(object2->value);
+                    return object;
+                }
+                return nullptr;
+            }
+            else if(expressionOperator == tt::operator_greater){
+                object->type = "bool";
+                if(first->assignableType == "int"){
+                    object->value = std::get<int>(object1->value) > std::get<int>(object2->value);
+                    return object;
+                }
+                else if(first->assignableType == "float"){
+                    object->value = std::get<float>(object1->value) > std::get<float>(object2->value);
+                    return object;
+                }
+                return nullptr;
+            }
+            else if(expressionOperator == tt::operator_greater_equal){
+                object->type = "bool";
+                if(first->assignableType == "int"){
+                    object->value = std::get<int>(object1->value) >= std::get<int>(object2->value);
+                    return object;
+                }
+                else if(first->assignableType == "float"){
+                    object->value = std::get<float>(object1->value) >= std::get<float>(object2->value);
+                    return object;
+                }
+                return nullptr;
+            }
+            /*
+             *  arithmetic operators
+             */
+            else if(expressionOperator == tt::operator_plus){
+                object->type = object1->type;
+                if(first->assignableType == "int"){
+                    object->value = std::get<int>(object1->value) + std::get<int>(object2->value);
+                    return object;
+                }
+                else if(first->assignableType == "float"){
+                    object->value = std::get<float>(object1->value) + std::get<float>(object2->value);
+                    return object;
+                }
+                return object;
+            }
+            else if(expressionOperator == tt::operator_minus){
+                object->type = object1->type;
+                if(first->assignableType == "int"){
+                    object->value = std::get<int>(object1->value) + std::get<int>(object2->value);
+                    return object;
+                }
+                else if(first->assignableType == "float"){
+                    object->value = std::get<float>(object1->value) + std::get<float>(object2->value);
+                    return object;
+                }
+                return object;
+            }
+            else if(expressionOperator == tt::operator_multiply){
+                object->type = object1->type;
+                if(first->assignableType == "int"){
+                    object->value = std::get<int>(object1->value) * std::get<int>(object2->value);
+                    return object;
+                }
+                else if(first->assignableType == "float"){
+                    object->value = std::get<float>(object1->value) * std::get<float>(object2->value);
+                    return object;
+                }
+                return object;
+            }
+            else if(expressionOperator == tt::operator_divide){
+                object->type = object1->type;
+                if(first->assignableType == "int"){
+                    object->value = std::get<int>(object1->value) / std::get<int>(object2->value);
+                    return object;
+                }
+                else if(first->assignableType == "float"){
+                    object->value = std::get<float>(object1->value) / std::get<float>(object2->value);
+                    return object;
+                }
+                return object;
             }
         }
 

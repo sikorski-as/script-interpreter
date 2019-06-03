@@ -15,8 +15,7 @@ public:
     }
 
     IRObject::ptr execute(IRContext* context) override {
-        std::cout << "Executing var assignment..." << std::endl;
-
+        debug("Executing assignment to variable " + name);
         auto o = value->execute(context);
         auto object = *(o);
         context->scopeSymbols[name] = std::make_shared<IRObject>(object); // copy assignment

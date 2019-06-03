@@ -19,8 +19,8 @@ public:
     }
 
     IRObject::ptr execute(IRContext* context) override {
+        debug("Executing return statement");
         auto object = value->execute(context);
-
         throw ReturnException{object};
     }
 };

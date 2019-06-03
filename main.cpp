@@ -1,3 +1,4 @@
+#include "settings.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -18,16 +19,53 @@ using std::string;
 using std::vector;
 using std::ifstream;
 
+auto fileToString = [](std::string filename) {
+    std::ifstream test1(filename);
+    std::stringstream buffer;
+    buffer << test1.rdbuf();
+    return buffer.str();
+};
+
 int main(int argc, const char* argv[])
 {
-	auto fileToString = [](std::string filename) {
-		std::ifstream test1(filename);
-		std::stringstream buffer;
-		buffer << test1.rdbuf();
-		return buffer.str();
-	};
+    std::vector<std::string> arguments(argv + 1, argv + argc);
 
-	StringSource source(fileToString("tests/editable_simple.txt"));
+    if(arguments.size() == 0){
+        std::cout << "Interpreter requires at least 1 argument, "
+                     "--help to show available options" << std::endl;
+        return 1;
+    }
+    else if(arguments[0] == "--help"){
+        std::cout << "Available commands:" << std::endl
+                << "--help\t\t\t\tshow this message\n"
+                << "--show\t\t\t\texecute example script\n"
+                << "--execute <filename>\t\texecute given script\n";
+        return 0;
+    }
+
+    std::string data;
+    if(arguments[0] == "--show"){
+        data = fileToString("tests/editable_simple.txt");
+        if(data == ""){
+            std::cout << "File not found" << std::endl;
+            return 2;
+        }
+    }
+    else if(arguments[0] == "--execute"){
+        if(arguments.size() >= 2){
+            data = fileToString(arguments[1]);
+            if(data == ""){
+                std::cout << "File not found" << std::endl;
+                return 3;
+            }
+        }
+        else {
+            std::cout << "--execute option requires the filepath only" << std::endl;
+            return 4;
+        }
+    }
+
+	StringSource source(data);
 	Lexer lexer(source);
 	Parser parser(lexer);
     SemCheck semcheck;
@@ -49,7 +87,7 @@ int main(int argc, const char* argv[])
         }
         else{
             std::cout << "Parser failed" << std::endl;
-            return 1;
+            return 5;
         }
 
         auto executable = semcheck.check(program);
@@ -58,23 +96,23 @@ int main(int argc, const char* argv[])
             std::cout << entry.text << std::endl;
         }
         if(semcheck.success()){
-            std::cout << "Starting execution..." << std::endl;
+            std::cout << "Starting execution..." << std::endl << std::endl;
             executable->run();
-            std::cout << "Execution finished..." << std::endl;
+            std::cout << "Execution finished..." << std::endl << std::endl;
         }
         else{
             std::cout << "Semcheck failed" << std::endl;
-            return 1;
+            return 6;
         }
 
 	}
 	catch (Lexer::UnexpectedEndOfFile& e) {
 		std::cout << "Lexer error: " << e.what() << std::endl << "Stopped." << std::endl;
-		return 1;
+		return 7;
 	}
 	catch (Lexer::UnexpectedSymbol& e) {
 		std::cout << "Lexer error: " << e.what() << std::endl << "Stopped." << std::endl;
-		return 2;
+		return 8;
 	}
 
 	return 0;
