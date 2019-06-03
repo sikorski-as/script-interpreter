@@ -19,6 +19,5 @@ int main(){
             return;
         }
         Network net;
-        net.load("german2_17.xml");
     }
 }

@@ -10,15 +10,12 @@ int factorial(int x){
 
 int fibo(int i){
     if(i < 0){
-        println("case < 0");
         return -1;
     }
     if(i == 0){
-        println("case 0");
         return 0;
     }
     if(i == 1){
-        println("case 1");
         return 1;
     }
 
@@ -44,7 +41,7 @@ int max(int a, int b){
 
 void main()
 {
-    print("Fibonacci(2)="); println_int(fibo(2));
+    print("Fibonacci(12)="); println_int(fibo(12));
     print("5!="); println_int(factorial(5));
 
     foo();
@@ -60,13 +57,13 @@ void main()
         println("wprowadzono inny napis");
     }
 
-    sleep(3);
+    sleep(1);
 
     int number1 = get_int();
     int number2 = get_int();
     print("bigger number:"); print_int(max(number1, number2));
 
-    sleep(3);
+    sleep(1);
 
     int i = 0;
     while(i < 10){

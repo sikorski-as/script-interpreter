@@ -38,17 +38,25 @@ int main(int argc, const char* argv[])
     else if(arguments[0] == "--help"){
         std::cout << "Available commands:" << std::endl
                 << "--help\t\t\t\tshow this message\n"
-                << "--show\t\t\t\texecute example script\n"
+                << "--debug_execute\t\texecute script and print syntax tree\n"
                 << "--execute <filename>\t\texecute given script\n";
         return 0;
     }
 
     std::string data;
-    if(arguments[0] == "--show"){
-        data = fileToString("tests/editable_simple.txt");
-        if(data == ""){
-            std::cout << "File not found" << std::endl;
-            return 2;
+    bool debug = false;
+    if(arguments[0] == "--debug_execute"){
+        if(arguments.size() >= 2){
+            data = fileToString(arguments[1]);
+            if(data == ""){
+                std::cout << "File not found" << std::endl;
+                return 2;
+            }
+            debug = true;
+        }
+        else {
+            std::cout << "--debug_execute option requires the filepath only" << std::endl;
+            return 3;
         }
     }
     else if(arguments[0] == "--execute"){
@@ -56,13 +64,18 @@ int main(int argc, const char* argv[])
             data = fileToString(arguments[1]);
             if(data == ""){
                 std::cout << "File not found" << std::endl;
-                return 3;
+                return 4;
             }
         }
         else {
             std::cout << "--execute option requires the filepath only" << std::endl;
-            return 4;
+            return 5;
         }
+    }
+    else{
+        std::cout << "Unknown option, "
+                     "--help to show available options" << std::endl;
+        return 6;
     }
 
 	StringSource source(data);
@@ -83,11 +96,14 @@ int main(int argc, const char* argv[])
 
         if(parser.success()){
             std::cout << "Parser successfully parsed program" << std::endl << std::endl;
-            printASTNode(program);
+            if(debug){
+                printASTNode(program);
+                std::cout << std::endl;
+            }
         }
         else{
             std::cout << "Parser failed" << std::endl;
-            return 5;
+            return 7;
         }
 
         auto executable = semcheck.check(program);
@@ -102,17 +118,17 @@ int main(int argc, const char* argv[])
         }
         else{
             std::cout << "Semcheck failed" << std::endl;
-            return 6;
+            return 8;
         }
 
 	}
 	catch (Lexer::UnexpectedEndOfFile& e) {
 		std::cout << "Lexer error: " << e.what() << std::endl << "Stopped." << std::endl;
-		return 7;
+		return 9;
 	}
 	catch (Lexer::UnexpectedSymbol& e) {
 		std::cout << "Lexer error: " << e.what() << std::endl << "Stopped." << std::endl;
-		return 8;
+		return 10;
 	}
 
 	return 0;
