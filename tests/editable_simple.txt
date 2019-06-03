@@ -1,15 +1,17 @@
 int fibo(int i){
-    if(i < 1){
+    if(i < 0){
+        println("case < 0");
         return -1;
     }
     if(i == 0){
+        println("case 0");
         return 0;
     }
     if(i == 1){
+        println("case 1");
         return 1;
     }
 
-    sleep(2);
     return fibo(i - 1) + fibo(i - 2);
 }
 
@@ -32,7 +34,7 @@ int max(int a, int b){
 
 void main()
 {
-
+    println_int(fibo(2));
 
     foo();
     bar();

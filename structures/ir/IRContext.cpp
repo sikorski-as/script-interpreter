@@ -28,3 +28,12 @@ std::shared_ptr<IRFunction> IRContext::getFunction(std::string& name) {
     }
     return nullptr;
 }
+
+void IRContext::setSymbol(std::string & name, IRObject::ptr value) {
+    if(scopeSymbols.count(name) > 0){
+        scopeSymbols[name] = value;
+    }
+    if(upperContext){
+        return upperContext->setSymbol(name, value);
+    }
+}

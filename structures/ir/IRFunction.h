@@ -28,13 +28,6 @@ public:
         auto context = contextProto.createInstance(args);
         context->upperContext = upperContext;
 
-        /*try{
-
-        }
-        catch(IRReturnStatement::ReturnException e){
-            return e.value;
-        }*/
-
         for(auto& s: statements){
             s->execute(context);
         }

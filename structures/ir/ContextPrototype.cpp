@@ -45,7 +45,7 @@ IRContext *ContextPrototype::createInstance(std::vector<IRObject::ptr> values) {
     auto context = new IRContext();
     for(int i = 0; i < values.size(); i++){
         context->addSymbol(functionArgsOrder[i].second, values[i]);
-        //std::cout << "new context with variable " << functionArgsOrder[i].second << std::endl;
+        std::cout << "new context with variable " << functionArgsOrder[i].second << std::endl;
     }
     return context;
 }

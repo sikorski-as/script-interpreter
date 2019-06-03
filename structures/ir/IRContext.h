@@ -17,6 +17,7 @@ public:
     IRContext(IRContext* = nullptr);
     void addSymbol(std::string&, IRObject::ptr);
     IRObject::ptr getSymbol(std::string&);
+    void setSymbol(std::string&, IRObject::ptr);
 
     std::shared_ptr<IRFunction> getFunction(std::string&);
 };
