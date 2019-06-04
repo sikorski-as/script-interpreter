@@ -1,0 +1,21 @@
+void main(){
+    Network net;
+    net = Network("german-network.xml");
+    net = load_network("polish-network.xml");
+
+    Algorithm alg;
+    alg = Algorithm("cplex");
+    set_param(alg, "link_weight", 1.0);
+    float value = get_param(alg, "node_cost");
+    print("Default cost of the node: "); println_float(value);
+
+    Evaluator eval;
+    eval = Evaluator("binary");
+
+    run_algorithm(net, alg);
+
+    float score = evaluate_network(net, eval);
+    print("Score after algorithm execution: "); println_float(score);
+
+
+}

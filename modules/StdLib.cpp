@@ -10,8 +10,11 @@ unordered_map<string, vector<std::string>> StdLib::STDLIB_FUNCTIONS = {
 
         {"print", {"void", "print", "string"}},
         {"print_int", {"void", "print_int", "int"}},
+        {"print_float", {"void", "print_float", "float"}},
+
         {"println", {"void", "println", "string"}},
         {"println_int", {"void", "println_int", "int"}},
+        {"println_float", {"void", "println_float", "float"}},
 
         {"get_int", {"int", "get_int"}},
         {"get_string", {"string", "get_string"}},
@@ -21,7 +24,17 @@ unordered_map<string, vector<std::string>> StdLib::STDLIB_FUNCTIONS = {
         {"random", {"int", "random"}},
         {"Network", {"Network", "Network", "string"}},
         {"Algorithm", {"Algorithm", "Algorithm", "string"}},
-        {"Evaluator", {"Evaluator", "Evaluator", "string"}}
+        {"Evaluator", {"Evaluator", "Evaluator", "string"}},
+
+        {"evaluate_network", {"float", "evaluate_network", "Network", "Evaluator"}},
+        {"run_algorithm", {"void", "run_algorithm", "Network", "Algorithm"}},
+
+        {"save_network", {"void", "save_network", "Network", "string"}},
+        {"load_network", {"Network", "load_network", "string"}},
+
+        {"set_param", {"void", "set_param", "Algorithm", "string", "float"}},
+        {"get_param", {"float", "get_param", "Algorithm", "string"}},
+
 };
 
 bool StdLib::hasFunction(std::string & fname) {
@@ -101,6 +114,14 @@ IRObject::ptr StdLib::libraryFunctionCall(std::string &fname, std::vector<IRObje
         std::cout << std::get<int>(args[0]->value) << std::endl;
         return nullptr;
     }
+    else if(fname == "print_float"){
+        std::cout << std::get<float>(args[0]->value);
+        return nullptr;
+    }
+    else if(fname == "println_float"){
+        std::cout << std::get<float>(args[0]->value) << std::endl;
+        return nullptr;
+    }
     else if(fname == "get_int"){
         std::cout << "enter int value: "<< std::flush;
 
@@ -164,6 +185,38 @@ IRObject::ptr StdLib::libraryFunctionCall(std::string &fname, std::vector<IRObje
         auto object = std::make_shared<IRObject>();
         object->value = static_cast<int>(time(NULL));
         object->type = "int";
+        return object;
+    }
+    else if(fname == "evaluate_network"){
+        std::cout << "<calling evaluate_network(Network, Evaluator) library function>" << std::endl;
+        auto object = std::make_shared<IRObject>();
+        object->type = "float";
+        object->value = 0.85f;
+        return object;
+    }
+    else if(fname == "run"){
+        std::cout << "<calling run_algorithm(Network, Algorithm) library function>" << std::endl;
+        return nullptr;
+    }
+    else if(fname == "save_network"){
+        std::cout << "<calling save_network(Network, string) library function>" << std::endl;
+        return nullptr;
+    }
+    else if(fname == "load_network"){
+        std::cout << "<calling load_network(string) library function>" << std::endl;
+        auto object = std::make_shared<IRObject>();
+        object->type = "Network";
+        return object;
+    }
+    else if(fname == "set_param"){
+        std::cout << "<calling set_param(Algorithm, string, float) library function>" << std::endl;
+        return nullptr;
+    }
+    else if(fname == "get_param"){
+        std::cout << "<calling get_param(Algorithm, string) library function>" << std::endl;
+        auto object = std::make_shared<IRObject>();
+        object->type = "float";
+        object->value = 0.95f;
         return object;
     }
 

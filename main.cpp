@@ -114,7 +114,7 @@ int main(int argc, const char* argv[])
         if(semcheck.success()){
             std::cout << "Starting execution..." << std::endl << std::endl;
             executable->run();
-            std::cout << "Execution finished..." << std::endl << std::endl;
+            std::cout << std::endl << "Execution finished..." << std::endl << std::endl;
         }
         else{
             std::cout << "Semcheck failed" << std::endl;
