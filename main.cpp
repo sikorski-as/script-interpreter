@@ -35,17 +35,17 @@ int main(int argc, const char* argv[])
                      "--help to show available options" << std::endl;
         return 1;
     }
-    else if(arguments[0] == "--help"){
+    else if(arguments[0] == "--help" || arguments[0] == "-h"){
         std::cout << "Available commands:" << std::endl
                 << "--help\t\t\t\tshow this message\n"
-                << "--debug_execute\t\texecute script and print syntax tree\n"
-                << "--execute <filename>\t\texecute given script\n";
+                << "--debug_execute, -de <filename>\t\texecute script and print syntax tree\n"
+                << "--execute, -e <filename>\t\texecute given script\n";
         return 0;
     }
 
     std::string data;
     bool debug = false;
-    if(arguments[0] == "--debug_execute"){
+    if(arguments[0] == "--debug_execute" || arguments[0] == "-de"){
         if(arguments.size() >= 2){
             data = fileToString(arguments[1]);
             if(data == ""){
@@ -59,7 +59,7 @@ int main(int argc, const char* argv[])
             return 3;
         }
     }
-    else if(arguments[0] == "--execute"){
+    else if(arguments[0] == "--execute" || arguments[0] == "-e"){
         if(arguments.size() >= 2){
             data = fileToString(arguments[1]);
             if(data == ""){
