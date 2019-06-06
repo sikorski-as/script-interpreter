@@ -57,7 +57,6 @@ IRProgram::ptr SemCheck::check(Program::ptr syntaxTree) {
 
 IRFunction::ptr SemCheck::checkFunctionDefinition(FunctionDefinition::ptr fundef) {
     auto ir_fun = std::make_shared<IRFunction>();
-    //log({"Checking function definition..."});
 
     currentFunctionName = fundef->functionName;
     currentFunctionReturnType = fundef->returnTypeName;
@@ -67,10 +66,6 @@ IRFunction::ptr SemCheck::checkFunctionDefinition(FunctionDefinition::ptr fundef
     auto new_context = ContextPrototype(&context);
 
     for(auto& varproto: fundef->arguments){
-//        if(context.isVariableInScope(varproto.second)){
-//            error({std::string("Variable " + varproto.second + " already defined in this scope")});
-//        }
-//        else {
         if(StdLib::hasType(varproto.first)){
             new_context.addVariable(varproto);
             currentFunctionParamsPrototype.push_back(varproto);
@@ -78,8 +73,8 @@ IRFunction::ptr SemCheck::checkFunctionDefinition(FunctionDefinition::ptr fundef
         else{
             error({std::string("Unknown type '" + varproto.second + "'" )});
         }
-//        }
     }
+    context.functionArgsOrder = currentFunctionParamsPrototype;
 
     if(fundef->returnTypeName == "void")
         context.returnStatementSpotted();
@@ -285,8 +280,10 @@ IRFunctionCall::ptr SemCheck::checkFunctionCall(ContextPrototype& context, ASTNo
         auto& fun_args = funcall->arguments;
 
         if(fun_args.size() != defined_function_args.size()){
-            error({std::string("Number of arguments for call of function '" + fun_name +
-                               "' differs from the one defined before")});
+            error({std::string("Number of arguments for call of function '" + fun_name
+                               + "' differs from the one defined before"
+                               + "(" + std::to_string(fun_args.size()) + "!="
+                               + std::to_string(defined_function_args.size()) + ")")});
             return nullptr;
         }
         else{
@@ -296,13 +293,12 @@ IRFunctionCall::ptr SemCheck::checkFunctionCall(ContextPrototype& context, ASTNo
                 auto assignable = checkAssignable(context, fun_args[i]);
                 if(assignable && assignable->getType() != defined_function_args[i].first){
                     error({std::string("Incorrect type ('" + assignable->getType()
-                                       + "') for function call (expected '" + defined_function_args[i].first + "'")});
+                                       + "') for function call (expected '" + defined_function_args[i].first + "')")});
                     return nullptr;
                 }
                 functionCall->addArgument(assignable);
             }
             functionCall->returnType = definedFunctions[fun_name]->returnTypeName;
-            //log({"Successfully parsed function call (1)"});
             return functionCall;
         }
     }

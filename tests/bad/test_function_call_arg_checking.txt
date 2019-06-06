@@ -1,0 +1,48 @@
+void accepts_int(int i){}
+void accepts_float(float f){}
+void accepts_string(string s){}
+void accepts_network(Network net){}
+void accepts_algorithm(Algorithm alg){}
+void accepts_evaluator(Algorithm alg){}
+
+void main(){
+    Network net;
+    Algorithm alg;
+    Evaluator eval;
+
+    accepts_int(1.0);
+    accepts_int("");
+    accepts_int(net);
+    accepts_int(alg);
+    accepts_int(eval);
+
+    accepts_float(1);
+    accepts_float("");
+    accepts_float(net);
+    accepts_float(alg);
+    accepts_float(eval);
+
+    accepts_string(1);
+    accepts_string(1.0);
+    accepts_string(net);
+    accepts_string(alg);
+    accepts_string(eval);
+
+    accepts_network(1);
+    accepts_network(1.0);
+    accepts_network("");
+    accepts_network(alg);
+    accepts_network(eval);
+
+    accepts_algorithm(1);
+    accepts_algorithm(1.0);
+    accepts_algorithm("");
+    accepts_algorithm(net);
+    accepts_algorithm(eval);
+
+    accepts_evaluator(1);
+    accepts_evaluator(1.0);
+    accepts_evaluator("");
+    accepts_evaluator(net);
+    accepts_evaluator(alg);
+}
