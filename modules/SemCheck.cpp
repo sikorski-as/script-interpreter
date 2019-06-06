@@ -67,18 +67,18 @@ IRFunction::ptr SemCheck::checkFunctionDefinition(FunctionDefinition::ptr fundef
     auto new_context = ContextPrototype(&context);
 
     for(auto& varproto: fundef->arguments){
-        if(context.isVariableInScope(varproto.second)){
-            error({std::string("Variable " + varproto.second + " already defined in this scope")});
+//        if(context.isVariableInScope(varproto.second)){
+//            error({std::string("Variable " + varproto.second + " already defined in this scope")});
+//        }
+//        else {
+        if(StdLib::hasType(varproto.first)){
+            new_context.addVariable(varproto);
+            currentFunctionParamsPrototype.push_back(varproto);
         }
-        else {
-            if(StdLib::hasType(varproto.first)){
-                context.addVariable(varproto);
-                currentFunctionParamsPrototype.push_back(varproto);
-            }
-            else{
-                error({std::string("Unknown type '" + varproto.second + "'" )});
-            }
+        else{
+            error({std::string("Unknown type '" + varproto.second + "'" )});
         }
+//        }
     }
 
     if(fundef->returnTypeName == "void")
@@ -175,10 +175,10 @@ IRStatement::ptr SemCheck::checkWhileStatement(ContextPrototype & context, State
 
 IRStatement::ptr SemCheck::checkVarDeclaration(ContextPrototype& context, Statement::ptr statement) {
     auto declaration = std::dynamic_pointer_cast<VariableDeclaration>(statement);
-    if(context.isVariableInScope(declaration->name)){
-        error({std::string("Variable '" + declaration->name + "' already declared in this scope")});
-    }
-    else{
+//    if(context.isVariableInScope(declaration->name)){
+//        error({std::string("Variable '" + declaration->name + "' already declared in this scope")});
+//    }
+//    else{
         if(!StdLib::hasType(declaration->typeName)){
             error({std::string("Declaration of variable of an unknown type (" + declaration->typeName + ")")});
         }
@@ -188,17 +188,17 @@ IRStatement::ptr SemCheck::checkVarDeclaration(ContextPrototype& context, Statem
 
             return std::make_shared<IRVarDeclaration>(declaration->typeName, declaration->name);
         }
-    }
+//    }
 
     return nullptr;
 }
 
 IRStatement::ptr SemCheck::checkVarDefinition(ContextPrototype& context, Statement::ptr statement) {
     auto definition = std::dynamic_pointer_cast<VariableDefinition>(statement);
-    if(context.isVariableInScope(definition->name)){
-        error({std::string("Variable '" + definition->name + "' already declared in this scope")});
-    }
-    else{
+//    if(context.isVariableInScope(definition->name)){
+//        error({std::string("Variable '" + definition->name + "' already declared in this scope")});
+//    }
+//    else{
         if(!StdLib::hasType(definition->typeName)){
             error({std::string("Declaration of variable of an unknown type (" + definition->typeName + ")")});
         }
@@ -221,7 +221,7 @@ IRStatement::ptr SemCheck::checkVarDefinition(ContextPrototype& context, Stateme
                 return std::make_shared<IRVarDefinition>(definition->typeName, definition->name, assignable);
             }
         }
-    }
+//    }
 
     return nullptr;
 }
