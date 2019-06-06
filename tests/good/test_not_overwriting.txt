@@ -1,3 +1,5 @@
+# sprawdza czy z wyzszego zakresu nie sa nadpisywane gdy
+# w nizszym zakresie zadeklarowano zmienna o tej samej nazwie
 void main(){
 	int i = 1;
 	print("Before if: i = "); println_int(i);

@@ -1,3 +1,4 @@
+# sprawdza zgodnosc typow argumentow podczas wolania funkcji
 void accepts_int(int i){}
 void accepts_float(float f){}
 void accepts_string(string s){}

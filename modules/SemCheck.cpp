@@ -122,9 +122,6 @@ IRStatement::ptr SemCheck::checkStatement(ContextPrototype & context, Statement:
             return checkReturnStatement(context, statement);
         case ASTNode::Type::function_call:
             return checkFunctionCall(context, statement);
-        case ASTNode::Type::method_call:
-            log({"Method call statement: todo"});
-            return nullptr;
     }
 
     error({"Fatal error: unknown type of statement"});
@@ -170,53 +167,45 @@ IRStatement::ptr SemCheck::checkWhileStatement(ContextPrototype & context, State
 
 IRStatement::ptr SemCheck::checkVarDeclaration(ContextPrototype& context, Statement::ptr statement) {
     auto declaration = std::dynamic_pointer_cast<VariableDeclaration>(statement);
-//    if(context.isVariableInScope(declaration->name)){
-//        error({std::string("Variable '" + declaration->name + "' already declared in this scope")});
-//    }
-//    else{
-        if(!StdLib::hasType(declaration->typeName)){
-            error({std::string("Declaration of variable of an unknown type (" + declaration->typeName + ")")});
-        }
-        else{
-            auto varproto = std::make_pair(declaration->typeName, declaration->name);
-            context.addVariable(varproto);
 
-            return std::make_shared<IRVarDeclaration>(declaration->typeName, declaration->name);
-        }
-//    }
+    if(!StdLib::hasType(declaration->typeName)){
+        error({std::string("Declaration of variable of an unknown type (" + declaration->typeName + ")")});
+    }
+    else{
+        auto varproto = std::make_pair(declaration->typeName, declaration->name);
+        context.addVariable(varproto);
+
+        return std::make_shared<IRVarDeclaration>(declaration->typeName, declaration->name);
+    }
 
     return nullptr;
 }
 
 IRStatement::ptr SemCheck::checkVarDefinition(ContextPrototype& context, Statement::ptr statement) {
     auto definition = std::dynamic_pointer_cast<VariableDefinition>(statement);
-//    if(context.isVariableInScope(definition->name)){
-//        error({std::string("Variable '" + definition->name + "' already declared in this scope")});
-//    }
-//    else{
-        if(!StdLib::hasType(definition->typeName)){
-            error({std::string("Declaration of variable of an unknown type (" + definition->typeName + ")")});
+
+    if(!StdLib::hasType(definition->typeName)){
+        error({std::string("Declaration of variable of an unknown type (" + definition->typeName + ")")});
+    }
+    else{
+        auto assignable = checkAssignable(context, definition->value);
+        if(assignable == nullptr){
+            return nullptr;
+        }
+        auto var_type = definition->typeName;
+        auto assign_type = assignable->getType();
+
+        if(var_type != assign_type){
+            error({std::string("Incompatible types for assignment ('" + definition->name +
+                               "' is of type '" + var_type + "', not '" + assign_type + "')")});
         }
         else{
-            auto assignable = checkAssignable(context, definition->value);
-            if(assignable == nullptr){
-                return nullptr;
-            }
-            auto var_type = definition->typeName;
-            auto assign_type = assignable->getType();
+            auto varproto = std::make_pair(definition->typeName, definition->name);
+            context.addVariable(varproto);
 
-            if(var_type != assign_type){
-                error({std::string("Incompatible types for assignment ('" + definition->name +
-                                   "' is of type '" + var_type + "', not '" + assign_type + "')")});
-            }
-            else{
-                auto varproto = std::make_pair(definition->typeName, definition->name);
-                context.addVariable(varproto);
-
-                return std::make_shared<IRVarDefinition>(definition->typeName, definition->name, assignable);
-            }
+            return std::make_shared<IRVarDefinition>(definition->typeName, definition->name, assignable);
         }
-//    }
+    }
 
     return nullptr;
 }

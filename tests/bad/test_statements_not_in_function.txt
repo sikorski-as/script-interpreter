@@ -1,3 +1,5 @@
+# sprawdza czy analizator skladniowy zglosi blad
+# podczas proby przeparsowania funkcji
 int x = 1.52137;
 float f = 1997;
 void foo()
@@ -25,5 +27,4 @@ if(x==0){
 }
 (12)(1.2)
 0.1 # komentarz 2
-# komentarz 3
 

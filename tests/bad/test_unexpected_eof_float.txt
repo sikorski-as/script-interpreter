@@ -1,3 +1,5 @@
+# sprawdza zgloszenie nieoczekiwanego symbolu
+# podczas parsowania literalu typu float
 void main()
 {
     float f = 0.

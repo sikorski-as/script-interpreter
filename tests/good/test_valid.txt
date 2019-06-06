@@ -1,3 +1,4 @@
+# maly test z wczytaniem danych od uzytkownika
 void main()
 {
     println("Starting application");

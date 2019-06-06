@@ -1,3 +1,4 @@
+# kod przykladu czwartego z dokumentacji
 int factorial(int x){
     if(x < 0){
         return -1;
@@ -61,7 +62,7 @@ void main()
 
     int number1 = get_int();
     int number2 = get_int();
-    print("bigger number:"); print_int(max(number1, number2));
+    print("bigger number: "); println_int(max(number1, number2));
 
     sleep(1);
 

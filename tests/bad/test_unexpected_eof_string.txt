@@ -1,3 +1,5 @@
+# sprawdza zgloszenie nieoczekiwanego konca pliku
+# podczas parsowania literalu typu string
 void main(){
     string str = "blablabla
 }

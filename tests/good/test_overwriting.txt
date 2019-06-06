@@ -1,3 +1,5 @@
+# sprawdza czy wartosc zmiennej jest nadpisywana
+# jesli w niszym zakresie zmieniono wartosc zmiennej
 void main(){
 	int i = 1;
 	print("Before if: i = "); println_int(i);

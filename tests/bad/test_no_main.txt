@@ -1,3 +1,4 @@
+# testuje czy wykrywany jest brak maina
 void foo(){
     print("hello, world!");
 }

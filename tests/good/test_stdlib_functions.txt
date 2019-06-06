@@ -1,3 +1,4 @@
+# testuje uzycie funkcji z typami wbudowanymi
 void main(){
     Network net;
     net = Network("german-network.xml");

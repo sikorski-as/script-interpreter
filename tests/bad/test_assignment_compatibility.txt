@@ -1,3 +1,4 @@
+# sprawdza czy zgadza sie typ zmiennej i typ przypisywanej wartosci
 int int_returner(){return 1;}
 float float_returner(){return 1.0;}
 string string_returner(){return "";}
