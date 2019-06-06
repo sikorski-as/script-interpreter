@@ -16,6 +16,8 @@ public:
     typedef std::vector<std::shared_ptr<IRExecutable>> ExecutableList;
     class RuntimeError{
     public:
+        RuntimeError() = default;
+        RuntimeError(std::string r){ reason = r;}
         std::string reason;
     };
 

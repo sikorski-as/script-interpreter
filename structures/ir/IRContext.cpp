@@ -37,3 +37,10 @@ void IRContext::setSymbol(std::string & name, IRObject::ptr value) {
         return upperContext->setSymbol(name, value);
     }
 }
+
+int IRContext::getCallStackSize() {
+    if(upperContext == nullptr){
+        return 0;
+    }
+    return upperContext->getCallStackSize() + 1;
+}

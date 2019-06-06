@@ -1,0 +1,9 @@
+void main(){
+    print("Float converted to int: ");
+    int i = int(3.0);
+    println_int(i);
+
+    print("Int converted to float: ");
+    float f = float(2);
+    println_float(f);
+}

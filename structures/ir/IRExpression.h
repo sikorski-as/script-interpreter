@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <variant>
+#include <string>
 #include "IRAssignable.h"
 #include "../Token.h"
 
@@ -12,6 +13,10 @@ public:
 
     IRAssignable::ptr first, second;
     Token::Type expressionOperator;
+
+    class ZeroDivision {
+        std::string reason;
+    };
 
     IRExpression(std::string type, Token::Type oper){
         assignableType = type;
@@ -143,7 +148,10 @@ public:
             else if(expressionOperator == tt::operator_divide){
                 object->type = object1->type;
                 if(first->getType() == "int"){
-                    object->value = std::get<int>(object1->value) / std::get<int>(object2->value);
+                    int second = std::get<int>(object2->value);
+                    if(second == 0)
+                        throw RuntimeError("Runtime error: dividing by zero");
+                    object->value = std::get<int>(object1->value) / second;
                     return object;
                 }
                 else if(first->getType() == "float"){

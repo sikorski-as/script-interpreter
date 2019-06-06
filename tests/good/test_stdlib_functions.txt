@@ -16,6 +16,4 @@ void main(){
 
     float score = evaluate_network(net, eval);
     print("Score after algorithm execution: "); println_float(score);
-
-
 }

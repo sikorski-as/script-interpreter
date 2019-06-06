@@ -1,5 +1,6 @@
 #include "StdLib.h"
 #include <iostream>
+#include <iomanip>
 #include <ctime>
 #include <cstdlib>
 #include <unistd.h>
@@ -34,7 +35,8 @@ unordered_map<string, vector<std::string>> StdLib::STDLIB_FUNCTIONS = {
 
         {"set_param", {"void", "set_param", "Algorithm", "string", "float"}},
         {"get_param", {"float", "get_param", "Algorithm", "string"}},
-
+        {"int", {"int", "int", "float"}},
+        {"float", {"float", "float", "int"}}
 };
 
 bool StdLib::hasFunction(std::string & fname) {
@@ -115,11 +117,13 @@ IRObject::ptr StdLib::libraryFunctionCall(std::string &fname, std::vector<IRObje
         return nullptr;
     }
     else if(fname == "print_float"){
-        std::cout << std::get<float>(args[0]->value);
+        std::cout.precision(6);
+        std::cout << std::fixed << std::get<float>(args[0]->value);
         return nullptr;
     }
     else if(fname == "println_float"){
-        std::cout << std::get<float>(args[0]->value) << std::endl;
+        std::cout.precision(6);
+        std::cout << std::fixed << std::get<float>(args[0]->value) << std::endl;
         return nullptr;
     }
     else if(fname == "get_int"){
@@ -217,6 +221,18 @@ IRObject::ptr StdLib::libraryFunctionCall(std::string &fname, std::vector<IRObje
         auto object = std::make_shared<IRObject>();
         object->type = "float";
         object->value = 0.95f;
+        return object;
+    }
+    else if(fname == "int"){
+        auto object = std::make_shared<IRObject>();
+        object->type = "int";
+        object->value = int(std::get<float>(args[0]->value));
+        return object;
+    }
+    else if(fname == "float"){
+        auto object = std::make_shared<IRObject>();
+        object->type = "float";
+        object->value = float(std::get<int>(args[0]->value));
         return object;
     }
 

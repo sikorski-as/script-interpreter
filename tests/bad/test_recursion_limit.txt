@@ -1,0 +1,7 @@
+void endless(){
+    endless();
+}
+
+void main(){
+    endless();
+}

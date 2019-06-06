@@ -95,10 +95,9 @@ int main(int argc, const char* argv[])
         }
 
         if(parser.success()){
-            std::cout << "Parser successfully parsed program" << std::endl << std::endl;
+            std::cout << "Parser successfully parsed program" << std::endl;
             if(debug){
                 printASTNode(program);
-                std::cout << std::endl;
             }
         }
         else{
@@ -112,9 +111,17 @@ int main(int argc, const char* argv[])
             std::cout << entry.text << std::endl;
         }
         if(semcheck.success()){
+            std::cout << "Semcheck found no semantic errors" << std::endl;
             std::cout << "Starting execution..." << std::endl << std::endl;
-            executable->run();
-            std::cout << std::endl << "Execution finished..." << std::endl << std::endl;
+            try{
+                executable->run();
+                std::cout << std::endl << "Execution finished..." << std::endl << std::endl;
+            }
+            catch(IRExecutable::RuntimeError& e){
+                std::cout << e.reason << std::endl;
+                std::cout << std::endl << "Execution failed" << std::endl;
+                return 11;
+            }
         }
         else{
             std::cout << "Semcheck failed" << std::endl;

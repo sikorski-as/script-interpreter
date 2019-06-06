@@ -28,6 +28,10 @@ public:
         auto context = contextProto.createInstance(args);
         context->upperContext = upperContext;
 
+        if(context->getCallStackSize() == 4096){
+            throw IRExecutable::RuntimeError("Runtime error: call stack size (4096) exceeded when calling function '" + functionName + "'");
+        }
+
         for(auto& s: statements){
             s->execute(context);
         }

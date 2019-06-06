@@ -19,6 +19,8 @@ public:
     IRObject::ptr getSymbol(std::string&);
     void setSymbol(std::string&, IRObject::ptr);
 
+    int getCallStackSize();
+
     std::shared_ptr<IRFunction> getFunction(std::string&);
 };
 
