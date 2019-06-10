@@ -1,0 +1,10 @@
+# sprawdza konwertowanie liczb
+void main(){
+    print("Float 3.0 converted to int: ");
+    int i = int(3.0);
+    println_int(i);
+
+    print("Int 2 converted to float: ");
+    float f = float(2);
+    println_float(f);
+}

@@ -6,15 +6,14 @@
 #include <unordered_map>
 #include <memory>
 #include "IRFunction.h"
-#include "IRContext.h"
 
 class IRProgram {
 public:
     typedef std::shared_ptr<IRProgram> ptr;
+
     void run();
 
-    std::unordered_map<std::string, IRFunction::ptr> definedFunctions;
-    IRContext context;
+    IRFunction::map definedFunctions;
 };
 
 

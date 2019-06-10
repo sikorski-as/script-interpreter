@@ -1,0 +1,74 @@
+# kod przykladu czwartego z dokumentacji
+int factorial(int x){
+    if(x < 0){
+        return -1;
+    }
+    if(x == 0){
+        return 1;
+    }
+    return factorial(x - 1) * x;
+}
+
+int fibo(int i){
+    if(i < 0){
+        return -1;
+    }
+    if(i == 0){
+        return 0;
+    }
+    if(i == 1){
+        return 1;
+    }
+
+    return fibo(i - 1) + fibo(i - 2);
+}
+
+void foo(){
+
+}
+
+int bar(){
+    return 1;
+}
+
+int max(int a, int b){
+    if(a > b){
+        return a;
+    }
+    else{
+        return b;
+    }
+}
+
+void main()
+{
+    print("Fibonacci(12)="); println_int(fibo(12));
+    print("5!="); println_int(factorial(5));
+
+    foo();
+    bar();
+    Network net = Network("siec.xml");
+
+    string s = get_string();
+
+    if(s == "tkom"){
+        println("wprowadzono nazwe przedmiotu");
+    }
+    else{
+        println("wprowadzono inny napis");
+    }
+
+    sleep(1);
+
+    int number1 = get_int();
+    int number2 = get_int();
+    print("bigger number: "); println_int(max(number1, number2));
+
+    sleep(1);
+
+    int i = 0;
+    while(i < 10){
+        print("iteration #"); println_int(i);
+        i = i + 1;
+    }
+}

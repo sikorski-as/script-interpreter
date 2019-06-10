@@ -1,0 +1,4 @@
+# sprawdza prototyp funkcji main
+bool main(int x){
+	return true;
+}

@@ -1,0 +1,21 @@
+# sprawdza czy wartosc zmiennej jest nadpisywana
+# jesli w niszym zakresie zmieniono wartosc zmiennej
+void main(){
+	int i = 1;
+	print("Before if: i = "); println_int(i);
+	if(i == 1){
+		i = 2;
+	}
+	print("After  if: i = "); println_int(i);
+
+    println("====================");
+
+	int w = 3;
+	int j = 3;
+	print("Before while: w = "); println_int(w);
+	while(j > 0){
+	    j = j - 1;
+	    w = 4;
+	}
+	print("After  while: w = "); println_int(w);
+}	

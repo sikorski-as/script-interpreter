@@ -15,7 +15,9 @@ public:
         variableName = varname;
     }
 
-    // todo: execute
+    IRObject::ptr execute(IRContext* context) override{
+        return std::make_shared<IRObject>(*context->getSymbol(variableName));
+    }
 };
 
 

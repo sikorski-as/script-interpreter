@@ -1,15 +1,16 @@
 #ifndef TKOM_INTERPRETER_IRFUNCTION_H
 #define TKOM_INTERPRETER_IRFUNCTION_H
 
+#include <iostream>
 #include <memory>
 #include <unordered_map>
 #include <string>
+#include "ContextPrototype.h" // circular dependency
 #include "IRObject.h"
-#include "IRFunction.h"
-#include "ContextPrototype.h"
 #include "IRExecutable.h"
 #include "IRStatement.h"
 #include "IRAssignable.h"
+#include "IRReturnStatement.h"
 
 class IRFunction{
 public:
@@ -23,9 +24,20 @@ public:
     ContextPrototype contextProto;
     StatementsList statements;
 
-    /*IRObject::ptr execute(IRContext*, IRAssignable::ExecutableList) override{
+    IRObject::ptr execute(IRContext* upperContext, std::vector<IRObject::ptr> args){
+        auto context = contextProto.createInstance(args);
+        context->upperContext = upperContext;
+
+        if(context->getCallStackSize() == 4096){
+            throw IRExecutable::RuntimeError("Runtime error: call stack size (4096) exceeded when calling function '" + functionName + "'");
+        }
+
+        for(auto& s: statements){
+            s->execute(context);
+        }
+
         return nullptr;
-    };*/
+    }
 };
 
 #endif //TKOM_INTERPRETER_IRFUNCTION_H

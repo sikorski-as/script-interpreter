@@ -9,11 +9,6 @@ class IRStatement : public IRExecutable{
 public:
     typedef std::shared_ptr<IRStatement> ptr;
     typedef std::vector<IRStatement::ptr> StatementsList;
-
-    IRObject::ptr execute(IRContext* context) override {
-        // todo
-        return nullptr;
-    }
 };
 
 

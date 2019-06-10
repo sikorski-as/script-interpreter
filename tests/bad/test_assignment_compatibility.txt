@@ -1,0 +1,61 @@
+# sprawdza czy zgadza sie typ zmiennej i typ przypisywanej wartosci
+int int_returner(){return 1;}
+float float_returner(){return 1.0;}
+string string_returner(){return "";}
+
+void main(){
+    Network net;
+    Algorithm alg;
+    Evaluator eval;
+
+    int i1 = 1.0;
+    int i2 = "";
+    int i3 = float_returner();
+    int i4 = string_returner();
+    int i5 = net;
+    int i6 = alg;
+    int i7 = eval;
+
+    float f1 = 1;
+    float f2 = "";
+    float f3 = int_returner();
+    float f4 = string_returner();
+    float f5 = net;
+    float f6 = alg;
+    float f7 = eval;
+
+    string s1 = 1;
+    string s2 = 1.0;
+    string s3 = int_returner();
+    string s4 = float_returner();
+    string s5 = net;
+    string s6 = alg;
+    string s7 = eval;
+
+    Network n1 = 1;
+    Network n2 = 1.0;
+    Network n3 = "";
+    Network n4 = int_returner();
+    Network n5 = float_returner();
+    Network n6 = string_returner();
+    Network n7 = alg;
+    Network n8 = eval;
+
+    Algorithm a1 = 1;
+    Algorithm a2 = 1.0;
+    Algorithm a3 = "";
+    Algorithm a4 = int_returner();
+    Algorithm a5 = float_returner();
+    Algorithm a6 = string_returner();
+    Algorithm a7 = net;
+    Algorithm a8 = eval;
+
+    Evaluator e1 = 1;
+    Evaluator e2 = 1.0;
+    Evaluator e3 = "";
+    Evaluator e4 = int_returner();
+    Evaluator e5 = float_returner();
+    Evaluator e6 = string_returner();
+    Evaluator e7 = net;
+    Evaluator e8 = alg;
+}

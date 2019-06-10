@@ -1,3 +1,4 @@
+#include "settings.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -18,16 +19,66 @@ using std::string;
 using std::vector;
 using std::ifstream;
 
+auto fileToString = [](std::string filename) {
+    std::ifstream test1(filename);
+    std::stringstream buffer;
+    buffer << test1.rdbuf();
+    return buffer.str();
+};
+
 int main(int argc, const char* argv[])
 {
-	auto fileToString = [](std::string filename) {
-		std::ifstream test1(filename);
-		std::stringstream buffer;
-		buffer << test1.rdbuf();
-		return buffer.str();
-	};
+    std::vector<std::string> arguments(argv + 1, argv + argc);
 
-	StringSource source(fileToString("tests/editable_simple.txt"));
+    if(arguments.size() == 0){
+        std::cout << "Interpreter requires at least 1 argument, "
+                     "--help to show available options" << std::endl;
+        return 1;
+    }
+    else if(arguments[0] == "--help" || arguments[0] == "-h"){
+        std::cout << "Available commands:" << std::endl
+                << "--help\t\t\t\tshow this message\n"
+                << "--debug_execute, -de <filename>\t\texecute script and print syntax tree\n"
+                << "--execute, -e <filename>\t\texecute given script\n";
+        return 0;
+    }
+
+    std::string data;
+    bool debug = false;
+    if(arguments[0] == "--debug_execute" || arguments[0] == "-de"){
+        if(arguments.size() >= 2){
+            data = fileToString(arguments[1]);
+            if(data == ""){
+                std::cout << "File not found" << std::endl;
+                return 2;
+            }
+            debug = true;
+        }
+        else {
+            std::cout << "--debug_execute option requires the filepath only" << std::endl;
+            return 3;
+        }
+    }
+    else if(arguments[0] == "--execute" || arguments[0] == "-e"){
+        if(arguments.size() >= 2){
+            data = fileToString(arguments[1]);
+            if(data == ""){
+                std::cout << "File not found" << std::endl;
+                return 4;
+            }
+        }
+        else {
+            std::cout << "--execute option requires the filepath only" << std::endl;
+            return 5;
+        }
+    }
+    else{
+        std::cout << "Unknown option, "
+                     "--help to show available options" << std::endl;
+        return 6;
+    }
+
+	StringSource source(data);
 	Lexer lexer(source);
 	Parser parser(lexer);
     SemCheck semcheck;
@@ -44,12 +95,14 @@ int main(int argc, const char* argv[])
         }
 
         if(parser.success()){
-            std::cout << "Parser successfully parsed program" << std::endl << std::endl;
-            printASTNode(program);
+            std::cout << "Parser successfully parsed program" << std::endl;
+            if(debug){
+                printASTNode(program);
+            }
         }
         else{
             std::cout << "Parser failed" << std::endl;
-            return 1;
+            return 7;
         }
 
         auto executable = semcheck.check(program);
@@ -57,15 +110,32 @@ int main(int argc, const char* argv[])
         for(auto& entry: semcheck_log){
             std::cout << entry.text << std::endl;
         }
+        if(semcheck.success()){
+            std::cout << "Semcheck found no semantic errors" << std::endl;
+            std::cout << "Starting execution..." << std::endl << std::endl;
+            try{
+                executable->run();
+                std::cout << std::endl << "Execution finished..." << std::endl << std::endl;
+            }
+            catch(IRExecutable::RuntimeError& e){
+                std::cout << e.reason << std::endl;
+                std::cout << std::endl << "Execution failed" << std::endl;
+                return 11;
+            }
+        }
+        else{
+            std::cout << "Semcheck failed" << std::endl;
+            return 8;
+        }
 
 	}
 	catch (Lexer::UnexpectedEndOfFile& e) {
 		std::cout << "Lexer error: " << e.what() << std::endl << "Stopped." << std::endl;
-		return 1;
+		return 9;
 	}
 	catch (Lexer::UnexpectedSymbol& e) {
 		std::cout << "Lexer error: " << e.what() << std::endl << "Stopped." << std::endl;
-		return 2;
+		return 10;
 	}
 
 	return 0;

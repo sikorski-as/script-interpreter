@@ -1,0 +1,7 @@
+# maly test z wczytaniem danych od uzytkownika
+void main()
+{
+    println("Starting application");
+    println("What file do you want to load for network?");
+    Network net = Network(get_string());
+}

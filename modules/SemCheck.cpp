@@ -20,6 +20,7 @@ std::vector<SemCheck::LogEntry> SemCheck::getLog() {
 }
 
 IRProgram::ptr SemCheck::check(Program::ptr syntaxTree) {
+    this->successAchieved = true;
     this->syntaxTree = syntaxTree;
     this->definedFunctions.clear();
 
@@ -56,7 +57,6 @@ IRProgram::ptr SemCheck::check(Program::ptr syntaxTree) {
 
 IRFunction::ptr SemCheck::checkFunctionDefinition(FunctionDefinition::ptr fundef) {
     auto ir_fun = std::make_shared<IRFunction>();
-    log({"Checking function definition..."});
 
     currentFunctionName = fundef->functionName;
     currentFunctionReturnType = fundef->returnTypeName;
@@ -66,19 +66,15 @@ IRFunction::ptr SemCheck::checkFunctionDefinition(FunctionDefinition::ptr fundef
     auto new_context = ContextPrototype(&context);
 
     for(auto& varproto: fundef->arguments){
-        if(context.isVariableInScope(varproto.second)){
-            error({std::string("Variable " + varproto.second + " already defined in this scope")});
+        if(StdLib::hasType(varproto.first)){
+            new_context.addVariable(varproto);
+            currentFunctionParamsPrototype.push_back(varproto);
         }
-        else {
-            if(StdLib::hasType(varproto.first)){
-                context.addVariable(varproto);
-                currentFunctionParamsPrototype.push_back(varproto);
-            }
-            else{
-                error({std::string("Unknown type '" + varproto.second + "'" )});
-            }
+        else{
+            error({std::string("Unknown type '" + varproto.second + "'" )});
         }
     }
+    context.functionArgsOrder = currentFunctionParamsPrototype;
 
     if(fundef->returnTypeName == "void")
         context.returnStatementSpotted();
@@ -126,9 +122,6 @@ IRStatement::ptr SemCheck::checkStatement(ContextPrototype & context, Statement:
             return checkReturnStatement(context, statement);
         case ASTNode::Type::function_call:
             return checkFunctionCall(context, statement);
-        case ASTNode::Type::method_call:
-            log({"Method call statement: todo"});
-            return nullptr;
     }
 
     error({"Fatal error: unknown type of statement"});
@@ -174,19 +167,15 @@ IRStatement::ptr SemCheck::checkWhileStatement(ContextPrototype & context, State
 
 IRStatement::ptr SemCheck::checkVarDeclaration(ContextPrototype& context, Statement::ptr statement) {
     auto declaration = std::dynamic_pointer_cast<VariableDeclaration>(statement);
-    if(context.isVariableInScope(declaration->name)){
-        error({std::string("Variable '" + declaration->name + "' already declared in this scope")});
+
+    if(!StdLib::hasType(declaration->typeName)){
+        error({std::string("Declaration of variable of an unknown type (" + declaration->typeName + ")")});
     }
     else{
-        if(!StdLib::hasType(declaration->typeName)){
-            error({std::string("Declaration of variable of an unknown type (" + declaration->typeName + ")")});
-        }
-        else{
-            auto varproto = std::make_pair(declaration->typeName, declaration->name);
-            context.addVariable(varproto);
+        auto varproto = std::make_pair(declaration->typeName, declaration->name);
+        context.addVariable(varproto);
 
-            return std::make_shared<IRVarDeclaration>(declaration->typeName, declaration->name);
-        }
+        return std::make_shared<IRVarDeclaration>(declaration->typeName, declaration->name);
     }
 
     return nullptr;
@@ -194,31 +183,27 @@ IRStatement::ptr SemCheck::checkVarDeclaration(ContextPrototype& context, Statem
 
 IRStatement::ptr SemCheck::checkVarDefinition(ContextPrototype& context, Statement::ptr statement) {
     auto definition = std::dynamic_pointer_cast<VariableDefinition>(statement);
-    if(context.isVariableInScope(definition->name)){
-        error({std::string("Variable '" + definition->name + "' already declared in this scope")});
+
+    if(!StdLib::hasType(definition->typeName)){
+        error({std::string("Declaration of variable of an unknown type (" + definition->typeName + ")")});
     }
     else{
-        if(!StdLib::hasType(definition->typeName)){
-            error({std::string("Declaration of variable of an unknown type (" + definition->typeName + ")")});
+        auto assignable = checkAssignable(context, definition->value);
+        if(assignable == nullptr){
+            return nullptr;
+        }
+        auto var_type = definition->typeName;
+        auto assign_type = assignable->getType();
+
+        if(var_type != assign_type){
+            error({std::string("Incompatible types for assignment ('" + definition->name +
+                               "' is of type '" + var_type + "', not '" + assign_type + "')")});
         }
         else{
-            auto assignable = checkAssignable(context, definition->value);
-            if(assignable == nullptr){
-                return nullptr;
-            }
-            auto var_type = definition->typeName;
-            auto assign_type = assignable->getType();
+            auto varproto = std::make_pair(definition->typeName, definition->name);
+            context.addVariable(varproto);
 
-            if(var_type != assign_type){
-                error({std::string("Incompatible types for assignment ('" + definition->name +
-                                   "' is of type '" + var_type + "', not '" + assign_type + "')")});
-            }
-            else{
-                auto varproto = std::make_pair(definition->typeName, definition->name);
-                context.addVariable(varproto);
-
-                return std::make_shared<IRVarDefinition>(definition->typeName, definition->name, assignable);
-            }
+            return std::make_shared<IRVarDefinition>(definition->typeName, definition->name, assignable);
         }
     }
 
@@ -284,8 +269,10 @@ IRFunctionCall::ptr SemCheck::checkFunctionCall(ContextPrototype& context, ASTNo
         auto& fun_args = funcall->arguments;
 
         if(fun_args.size() != defined_function_args.size()){
-            error({std::string("Number of arguments for call of function '" + fun_name +
-                               "' differs from the one defined before")});
+            error({std::string("Number of arguments for call of function '" + fun_name
+                               + "' differs from the one defined before"
+                               + "(" + std::to_string(fun_args.size()) + "!="
+                               + std::to_string(defined_function_args.size()) + ")")});
             return nullptr;
         }
         else{
@@ -295,13 +282,12 @@ IRFunctionCall::ptr SemCheck::checkFunctionCall(ContextPrototype& context, ASTNo
                 auto assignable = checkAssignable(context, fun_args[i]);
                 if(assignable && assignable->getType() != defined_function_args[i].first){
                     error({std::string("Incorrect type ('" + assignable->getType()
-                                       + "') for function call (expected '" + defined_function_args[i].first + "'")});
+                                       + "') for function call (expected '" + defined_function_args[i].first + "')")});
                     return nullptr;
                 }
                 functionCall->addArgument(assignable);
             }
             functionCall->returnType = definedFunctions[fun_name]->returnTypeName;
-            //log({"Successfully parsed function call (1)"});
             return functionCall;
         }
     }
@@ -457,13 +443,14 @@ IRAssignable::ptr SemCheck::checkExpression(ContextPrototype& context, Assignabl
             if(oper == ttype::operator_equal || oper == ttype::operator_not_equal){
                 if(checkTypesPair(first, second, "int", "int")
                     || checkTypesPair(first, second, "float", "float")
-                    || checkTypesPair(first, second, "bool", "bool")){
+                       || checkTypesPair(first, second, "bool", "bool")
+                          || checkTypesPair(first, second, "string", "string")){
 
                     expr->assignableType = "bool";
                     return expr;
                 }
 
-                error({"Comparison operator requires two identical numeric types or bool type as operands"});
+                error({"Comparison operator requires two identical numeric types, bool type or string type as operands"});
                 return nullptr;
             }
             else if(oper == ttype::operator_less

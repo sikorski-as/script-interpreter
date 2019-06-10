@@ -1,0 +1,4 @@
+# sprawdza czy lexer zglosi 'oczekiwano cyfry'
+void main(){
+    float f = 0..0
+}

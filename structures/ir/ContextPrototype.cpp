@@ -1,4 +1,5 @@
 #include "ContextPrototype.h"
+#include <iostream>
 
 void ContextPrototype::addVariable(ContextPrototype::VariablePrototype& varproto) {
     scopeVariables[varproto.second] = varproto;

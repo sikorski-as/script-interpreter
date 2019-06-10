@@ -55,6 +55,12 @@ Token Lexer::findKeywordOrIdentifier()
 	if (KEYWORDS_MAP.count(word) > 0) {
 		t.type = KEYWORDS_MAP.at(word);
 		t.representation = "keyword \"" + word + "\"";
+        if(t.type == Token::Type::keyword_true){
+            t.value = true;
+        }
+        else if(t.type == Token::Type::keyword_false){
+            t.value = false;
+        }
 	}
 	else {
 		t.type = Token::Type::identifier;

@@ -47,7 +47,6 @@ private:
     IRStatement::ptr checkReturnStatement(ContextPrototype&, Statement::ptr);
 
     IRFunctionCall::ptr checkFunctionCall(ContextPrototype&, ASTNode::ptr);
-    //IRStatement::ptr checkMethodCall(ContextPrototype&, Statement::ptr); // todo!
 
     IRAssignable::ptr checkAssignable(ContextPrototype&, Assignable::ptr);
     IRAssignable::ptr checkLiteral(ContextPrototype&, Assignable::ptr);

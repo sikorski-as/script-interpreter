@@ -5,8 +5,9 @@
 #include <vector>
 #include <unordered_map>
 #include <utility>
+// #include "IRFunction.h"
+#include "IRContext.h" // circular dependency
 #include "IRObject.h"
-#include "IRContext.h"
 
 class ContextPrototype {
 public:
@@ -24,7 +25,7 @@ public:
     bool hasReturnStatement();
     void returnStatementSpotted();
 
-    std::vector<VariablePrototype> functionArgsOrder; // {name_of_arg1, ..., name_of_argn}
+    std::vector<VariablePrototype> functionArgsOrder; // {name_of_arg_1, ..., name_of_arg_n}
 private:
     bool hasReturn;
     ContextPrototype* upperContext;

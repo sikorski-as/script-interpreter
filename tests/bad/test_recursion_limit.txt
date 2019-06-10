@@ -1,0 +1,9 @@
+# sprawdza czy interpreter poprawnie zatrzyma 
+# sie po osiagnieciu limitu wywolan funkcji
+void endless(){
+    endless();
+}
+
+void main(){
+    endless();
+}

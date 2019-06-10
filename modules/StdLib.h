@@ -5,7 +5,8 @@
 #include <string>
 #include <vector>
 #include <utility>
-
+#include <variant>
+#include "../structures/ir/IRObject.h"
 using namespace std;
 
 class StdLib {
@@ -19,6 +20,8 @@ public:
 
     static bool hasMethod(std::string&, std::string&);
     static std::unordered_map<string, unordered_map<string, vector<std::string>>> STDLIB_METHODS;
+
+    static IRObject::ptr libraryFunctionCall(std::string&, std::vector<IRObject::ptr>);
 };
 
 #endif //TKOM_INTERPRETER_STDLIB_H
